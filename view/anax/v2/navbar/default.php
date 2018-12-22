@@ -19,4 +19,6 @@ $classes = "navbar " . ($navbarConfig["class"] ?? null);
 <?php foreach ($items as $item) : ?>
     <a href="<?= url($item["url"]) ?>" title="<?= $item["title"] ?>"><?= $item["text"] ?></a>
 <?php endforeach; ?>
+
+
 </navbar>

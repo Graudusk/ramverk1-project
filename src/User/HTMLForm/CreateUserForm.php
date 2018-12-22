@@ -22,10 +22,14 @@ class CreateUserForm extends FormModel
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Legend",
+                "legend" => "Create user",
             ],
             [
-                "acronym" => [
+                "email" => [
+                    "type"        => "email",
+                ],
+
+                "name" => [
                     "type"        => "text",
                 ],
 
@@ -60,7 +64,8 @@ class CreateUserForm extends FormModel
     public function callbackSubmit()
     {
         // Get values from the submitted form
-        $acronym       = $this->form->value("acronym");
+        $email       = $this->form->value("email");
+        $name          = $this->form->value("name");
         $password      = $this->form->value("password");
         $passwordAgain = $this->form->value("password-again");
 
@@ -75,15 +80,16 @@ class CreateUserForm extends FormModel
         // $db = $this->di->get("dbqb");
         // $password = password_hash($password, PASSWORD_DEFAULT);
         // $db->connect()
-        //    ->insert("User", ["acronym", "password"])
-        //    ->execute([$acronym, $password]);
+        //    ->insert("User", ["email", "password"])
+        //    ->execute([$email, $password]);
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
-        $user->acronym = $acronym;
+        $user->email = $email;
+        $user->name = $name;
         $user->setPassword($password);
         $user->save();
 
-        $this->form->addOutput("User was created.");
+        $this->form->addOutput("User $user->name was created with email $user->email.");
         return true;
     }
 }

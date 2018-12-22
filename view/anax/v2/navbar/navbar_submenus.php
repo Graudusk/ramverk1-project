@@ -13,6 +13,7 @@ $navbar = new \Anax\Navigation\Navbar();
 $navbar->setDI($di);
 $html = $navbar->createMenuWithSubMenus($navbarConfig);
 
+// var_dump($html);
 $classes = "rm-navbar " . ( $class ?? null);
 
 

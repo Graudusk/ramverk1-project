@@ -6,6 +6,8 @@ use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
 use Erjh17\User\HTMLForm\UserLoginForm;
 use Erjh17\User\HTMLForm\CreateUserForm;
+use Erjh17\User\HTMLForm\EditUserForm;
+use Erjh17\User\UserSecurity;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -80,8 +82,8 @@ class UserController implements ContainerInjectableInterface
         $form = new UserLoginForm($this->di);
         $form->check();
 
-        $page->add("anax/v2/article/default", [
-            "content" => $form->getHTML(),
+        $page->add("user/login", [
+            "form" => $form->getHTML(),
         ]);
 
         return $page->render([
@@ -106,12 +108,81 @@ class UserController implements ContainerInjectableInterface
         $form = new CreateUserForm($this->di);
         $form->check();
 
-        $page->add("anax/v2/article/default", [
-            "content" => $form->getHTML(),
+        $page->add("user/create", [
+            "form" => $form->getHTML(),
         ]);
 
         return $page->render([
             "title" => "A create user page",
         ]);
+    }
+
+
+
+    /**
+     * Description.
+     *
+     * @param datatype $variable Description
+     *
+     * @throws Exception
+     *
+     * @return object as a response object
+     */
+    public function profileAction() : object
+    {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+
+        // $user = new User();
+        $userId = $this->di->session->get('login')['id'];
+
+
+        $page = $this->di->get("page");
+
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+        $user->find("id", $userId);
+
+        $page->add("user/profile", [
+            "user" => $user,
+            "avatar" => $user->getGravatar($user->email, true, 200)
+        ]);
+
+
+        return $page->render([
+            "title" => "User profile page",
+        ]);
+    }
+
+
+
+    /**
+     * Handler with form to update an item.
+     *
+     * @param int $id the id to update.
+     *
+     * @return object as a response object
+     */
+    public function editAction() : object
+    {
+        $page = $this->di->get("page");
+        $id = $this->di->session->get('login')['id'];
+
+        $form = new EditUserForm($this->di, $id);
+        $form->check();
+
+        $page->add("user/edit", [
+            "form" => $form->getHTML(),
+        ]);
+
+        return $page->render([
+            "title" => "Update user",
+        ]);
+    }
+
+    public function logoutAction()
+    {
+        $this->di->get('session')->set('login', null);
+        return $this->di->get('response')->redirect("");
     }
 }

@@ -14,6 +14,7 @@ $items = isset($items) ? $items : null;
 
 // Create urls for navigation
 $urlToEdit = url("user/edit");
+$urlToCreateQuestion = url("question/create");
 
 // var_dump($user);
 
@@ -22,5 +23,6 @@ $urlToEdit = url("user/edit");
     <?= $avatar ?>
 </p>
 <p>
-    <a href="<?= $urlToEdit ?>">Redigera</a>
+    <a href="<?= $urlToEdit ?>">Redigera</a> | 
+    <a href="<?= $urlToCreateQuestion ?>">Skapa fråga</a>
 </p>

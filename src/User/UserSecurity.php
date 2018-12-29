@@ -61,4 +61,29 @@ class UserSecurity
         //     return $this->app->response->redirect("");
         // }
     }
+
+    /**
+     * Checks wether a user is logged in.
+     *
+     * @param number $level the user level to check for.
+     *
+     * @return true | redirect to start page
+     */
+    public function userAuth($user)
+    {
+        // var_dump($this->di->session->get("login"));
+        if ($this->di->session->get("login") && $this->di->session->get("login") == $user) {
+            // return true;
+        } else {
+            // var_dump($this->di->response);
+            return $this->di->get("response")->redirect("user/login");
+            // return $this->di->response->redirect("");
+            // $this->di->get('response')->redirect("");
+        }
+        // if ($this->app->session->get("login") && $this->app->session->get("login")->level >= $level) {
+        //     return true;
+        // } else {
+        //     return $this->app->response->redirect("");
+        // }
+    }
 }

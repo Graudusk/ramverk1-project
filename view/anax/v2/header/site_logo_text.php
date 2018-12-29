@@ -11,7 +11,7 @@ namespace Anax\View;
 
 
 
-?><span class="site-logo-text" >
+?><!-- <span class="site-logo-text" >
     <a href="<?= url($homeLink) ?>">
         <?php if (isset($siteLogoTextIcon)) : ?>
         <span class="site-logo-text-icon" >
@@ -20,4 +20,4 @@ namespace Anax\View;
         <?php endif; ?>
         <?= $siteLogoText ?>
     </a>
-</span>
+</span> -->

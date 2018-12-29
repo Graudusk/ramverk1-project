@@ -10,19 +10,24 @@ return [
     // Here comes the menu items
     "items" => [
         [
-            "text" => "Hem",
+            "text" => "Home",
             "url" => "",
             "title" => "Första sidan, börja här.",
         ],
         [
-            "text" => "Om",
-            "url" => "om",
-            "title" => "Om denna webbplats.",
+            "text" => "Tags",
+            "url" => "tag",
+            "title" => "Tags.",
         ],
         [
-            "text" => "Verktyg",
-            "url" => "verktyg",
-            "title" => "Verktyg och möjligheter för utveckling.",
+            "text" => "Questions",
+            "url" => "question",
+            "title" => "Questions.",
+        ],
+        [
+            "text" => "About",
+            "url" => "about",
+            "title" => "Om denna webbplats.",
         ],
     ],
 ];

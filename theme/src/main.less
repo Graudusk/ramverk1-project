@@ -118,11 +118,11 @@ html.hgrid .inner-wrap {
  */
 
 // Cleanup theses
-@anchorColor:         #33b;
+@anchorColor:         #5664ff;
 @anchorColor2:        #448;
-@anchorColorHover:    #33f;
-@anchorColorActive:   #838;
-@anchorColorVisited:  #838;
+@anchorColorHover:    lighten(#5664ff, 20%);
+@anchorColorActive:   lighten(#5664ff, 20%);
+@anchorColorVisited:  lighten(#5664ff, 20%);
 
 @anchorColorAnonymous:      @colorBody;
 @anchorColorAnonymousHover: #00c;
@@ -198,6 +198,14 @@ html.hgrid .inner-wrap {
 .site-logo-text {
     font-family: @fontFamilySiteLogo;
     padding-left: 0.2em;
+    text-shadow: 2px -2px 2px #0f0f0f;
+    a {
+        color: #ddd;
+        &:hover {
+            color: #D0F02F;
+            text-shadow: 2px -2px 2px #67721F;
+        }
+    }
 }
 
 .rm-navbar {
@@ -212,12 +220,12 @@ html.hgrid .inner-wrap {
 }
 
 .rm-desktop li ul {
-    background-color: #fff;
+    background-color: #424242;
 }
 
 .wrap-sidebar .block h4 {
-    border-top: 1px solid #ccc;
-    background-image: linear-gradient(to right, #fff, #ccc);
+    border-top: 1px solid #555;
+    background-image: linear-gradient(to right,#333,#555);
 }
 
 
@@ -226,11 +234,22 @@ html.hgrid .inner-wrap {
  * My settings.
  */
 @bgColorHtml: #424242;
-@bgColorBody: #fff;
-@colorBody:   #111;
+@bgColorBody: #eee;
+@colorBody:   #333;
 
-@fontFamilyHeadings: @fontFamilyCambria;
-@fontFamilyBody:     @fontFamilyVerdana;
+/**
+ * Egna ändringar för typsnitt
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Sanchez|Titillium+Web|Roboto|Ubuntu');
+@header-font: 'Ubuntu', sans-serif;
+@font-logo: 'Ubuntu', serif;
+@font-body: 'Sanchez', serif;
+@fontFamilyCambria: 'Ubuntu', serif;;
+
+
+@fontFamilyHeadings: @header-font;
+@fontFamilyBody:     @font-body;
 @fontFamilyCode:     @fontFamilyCourier;
 
 @colorH1BorderBottom: #666; // Add to h4 also
@@ -239,7 +258,7 @@ html.hgrid .inner-wrap {
 @colorH4BorderBottom: #eee;
 
 @magicNumber:  24px;
-@fontSizeBody: 16px;
+@fontSizeBody: 18px;
 
 @columnWidth:   30;
 @gutterWidth:   10;
@@ -247,3 +266,180 @@ html.hgrid .inner-wrap {
 @gridType:      "float"; // "flex"
 
 @navbarFontFamily: @fontFamilyTimesNewRoman;
+
+@import (less) "modules/leaflet.css";
+#map { height: 300px; }
+
+
+.row {
+    .row();
+}
+
+.rm-navbar-max.rm-navbar {
+    display: none;
+}
+
+@media screen and (min-width: 801px) {
+    .col-sm-1 {#desinax-vgrid .column(2)}
+    .col-sm-2 {#desinax-vgrid .column(4)}
+    .col-sm-3 {#desinax-vgrid .column(6)}
+    .col-sm-4 {#desinax-vgrid .column(8)}
+    .col-sm-5 {#desinax-vgrid .column(10)}
+    .col-sm-6 {#desinax-vgrid .column(12)}
+    .col-sm-7 {#desinax-vgrid .column(14)}
+    .col-sm-8 {#desinax-vgrid .column(16)}
+    .col-sm-9 {#desinax-vgrid .column(18)}
+    .col-sm-10 {#desinax-vgrid .column(20)}
+    .col-sm-11 {#desinax-vgrid .column(22)}
+    .col-sm-12 {#desinax-vgrid .column(24)}
+}
+
+@media screen and (max-width: 800px) {
+    .rm-navbar-max.rm-navbar {
+        display: inline-block;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+
+pre {
+    &.error {
+        white-space: pre-line;
+        padding: 15px 30px;
+        margin: 30px 0;
+        font-size: 200%;
+        color: red;
+        background: #101010;
+        font-weight: 600;
+    }
+    &.code {
+        white-space: pre;
+        background-color: #eee;
+        color: #222;
+        padding: 0.5em;
+        border-left: 6px solid #aaa;
+    }
+}
+
+
+input[type="text"], input[type="number"], select, button, textarea {
+    color: #fff;
+    background-color: #222;
+    padding: 5px 10px;
+    border: #ddd solid 2px;
+}
+
+select {
+    padding: 3px 7px;
+}
+
+.row h3 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.region-header-col-2 {
+    display: block;
+    margin: auto;
+    float: none;
+}
+
+.outer-wrap-header {
+    background-color: #0c0c11;
+}
+
+.inner-wrap {
+    max-width: 960px;
+}
+
+.region-main {
+    // width: auto;
+    // margin: auto;
+    // padding: 40px 80px;
+}
+
+.outer-wrap-header {
+    margin-bottom: 0;
+}
+
+.hljs, .hljs-subst {
+    color: #eee;
+}
+.hljs {
+    padding: 1em;
+    background: #111;
+    border: 2px solid #555;
+    border-radius: 5px;
+}
+
+.region-header-col-2 {
+    width: auto;
+}
+
+.rm-default a {
+    padding: 0.5em;
+}
+
+.question, .answer, .comment {
+    background: #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    p {
+        margin: 10px 0;
+    }
+
+    .textBox {
+        padding: 12px;
+        background: #ddd;
+        margin: 0;
+    }
+}
+
+.comment {
+    background: #bbb;
+    .textBox {
+        padding: 0;
+        background: transparent;
+    }
+}
+
+.answer {
+    margin-left: 60px;
+    background: #ccc;
+}
+
+a, a:hover, a:visited {
+    color: #3e479e;
+}
+
+a.btn {
+    border: 1px solid #bbb;
+    padding: 6px;
+    background: #07091a;
+    color: #bbb;
+    text-decoration: none;
+    border-radius: 3px;
+    margin: 5px 0;
+    display: inline-block;
+
+    &:hover {
+        background: #151a48;
+    }
+}

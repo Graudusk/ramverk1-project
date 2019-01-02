@@ -5,6 +5,7 @@ namespace Erjh17\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Question\Question;
+use Erjh17\User\UserSecurity;
 
 /**
  * Form to delete an item.
@@ -16,10 +17,51 @@ class DeleteForm extends FormModel
      *
      * @param Psr\Container\ContainerInterface $di a service container
      */
-    public function __construct(ContainerInterface $di)
+    public function __construct(ContainerInterface $di, int $id)
     {
         parent::__construct($di);
+        $question = $this->getItemDetails($id);
         $this->form->create(
+            [
+                "id" => __CLASS__,
+                "legend" => "Delete question",
+            ],
+            [
+                "id" => [
+                    "type" => "text",
+                    "validation" => ["not_empty"],
+                    "readonly" => true,
+                    "value" => $question->id,
+                ],
+
+                "title" => [
+                    "type" => "text",
+                    "validation" => ["not_empty"],
+                    "readonly" => true,
+                    "value" => html_entity_decode($question->title),
+                ],
+
+                "question" => [
+                    "type" => "textarea",
+                    "readonly" => true,
+                    "validation" => ["not_empty"],
+                    "value" => html_entity_decode($question->question),
+                ],
+
+                "tags" => [
+                    "type" => "text",
+                    "readonly" => true,
+                    "value" => html_entity_decode($question->tags),
+                ],
+
+                "submit" => [
+                    "type" => "submit",
+                    "value" => "Delete",
+                    "callback" => [$this, "callbackSubmit"]
+                ],
+            ]
+        );
+        /*$this->form->create(
             [
                 "id" => __CLASS__,
                 "legend" => "Delete an item",
@@ -37,28 +79,50 @@ class DeleteForm extends FormModel
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]
-        );
+        );*/
     }
 
 
+
+
+    /**
+     * Get details on item to load form with.
+     *
+     * @param integer $id get details on item with id.
+     * 
+     * @return Question
+     */
+    public function getItemDetails($id) : object
+    {
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $id);
+
+        $security = new UserSecurity($this->di);
+        $security->userAuth($question->user);
+        return $question;
+    }
 
     /**
      * Get all items as array suitable for display in select option dropdown.
      *
      * @return array with key value of all items.
      */
-    protected function getAllItems() : array
-    {
-        $question = new Question();
-        $question->setDb($this->di->get("dbqb"));
+    // protected function getAllItems() : array
+    // {
+    //     $question = new Question();
+    //     $question->setDb($this->di->get("dbqb"));
 
-        $questions = ["-1" => "Select an item..."];
-        foreach ($question->findAll() as $obj) {
-            $questions[$obj->id] = "{$obj->column1} ({$obj->id})";
-        }
+    //     $questions = ["-1" => "Select an item..."];
+    //     foreach ($question->findAll() as $obj) {
+    //         $questions[$obj->id] = "{$obj->column1} ({$obj->id})";
+    //     }
 
-        return $questions;
-    }
+    //     $security = new UserSecurity($this->di);
+    //     $security->userAuth($question->user);
+
+    //     return $questions;
+    // }
 
 
 
@@ -72,7 +136,7 @@ class DeleteForm extends FormModel
     {
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $this->form->value("select"));
+        $question->find("id", $this->form->value("id"));
         $question->delete();
         return true;
     }

@@ -11,6 +11,7 @@ use Erjh17\Answer\HTMLForm\AnswerForm;
 use Erjh17\Comment\HTMLForm\CommentForm;
 use Erjh17\Answer\Answer;
 use Erjh17\Comment\Comment;
+use Erjh17\Tag\Tag;
 use Erjh17\User\UserSecurity;
 use Michelf\MarkdownExtra;
 
@@ -59,16 +60,21 @@ class QuestionController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
 
-        $questions = $question->findAll();
+        // $questions = $question->findAll();
+        $questions = $question->getQuestions();
+        // $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         foreach ((array)$questions as $item) {
-            $tags = explode(',', $item->tags);
-            $html = "";
-            foreach ($tags as $tag) {
-                $tagUrl = $this->di->get('url')->create("tag/{$tag}");
-                $html .= "<a class='tag' href='{$tagUrl}'>{$tag}</a>";
-            }
-            $item->tagsHtml = $html;
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            // $tags = explode(',', $item->tags);
+            // $html = "";
+            // foreach ($tags as $tag) {
+            //     $tagUrl = $this->di->get('url')->create("tag/{$tag}");
+            //     $html .= "<a class='tag' href='{$tagUrl}'>{$tag}</a>";
+            // }
+            $item->tags = $tags;
         }
 
         $page->add("question/crud/view-all", [
@@ -111,10 +117,10 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction() : object
+    public function deleteAction(int $id) : object
     {
         $page = $this->di->get("page");
-        $form = new DeleteForm($this->di);
+        $form = new DeleteForm($this->di, $id);
         $form->check();
 
         $page->add("question/crud/delete", [
@@ -165,39 +171,47 @@ class QuestionController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         // $question->find("slug", $slug);
-        $question->findWhereJoin("Question.*, User.name", "slug = ?", $slug, "User", "User.id = Question.user");
+        $question->getQuestionObject("slug", $slug);
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
+
+        $tag = new Tag();
+        $tag->setDb($this->di->get("dbqb"));
+        $tags = $tag->findAllWhere("question = ?", $question->id);
+        // var_dump($tags);
+        
+        $userId = $this->di->session->get('login')['id'];
+        $question->isUser = $question->user === $userId;
 
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-
-        $answers = $answer->findAllWhereJoin("Answer.*, User.name", "question = ?", $question->id, "User", "User.id = question");
+        $answers = $answer->findAllAnswers($question->id);
 
         $comment = new Comment();
         $comment->setDb($this->di->get("dbqb"));
 
-        $questionComments = $comment->findAllWhereJoin("Comment.*, User.name", "post = ? AND type = ?", [$question->id, "question"], "User", "User.id = user");
+        $questionComments = $comment->findAllComments([$question->id, "question"]);
 
         foreach ($questionComments as $comment) {
             $comment->html = MarkdownExtra::defaultTransform($comment->text);
         }
 
-        // var_dump($comments);
-
-        foreach ($answers as $value) {
+        foreach ((array)$answers as $key => $value) {
             $value->html = MarkdownExtra::defaultTransform($value->answer);
-            $comment = new Comment();
-            $comment->setDb($this->di->get("dbqb"));
+            $answerComment = new Comment();
+            $answerComment->setDb($this->di->get("dbqb"));
 
-            $comments = $comment->findAllWhereJoin("Comment.*, User.name", "post = ? AND type = ?", [$value->id, "answer"], "User", "User.id = user");
-            $value->comments = $comments;
+            $answers[$key]->comments = $answerComment->findAllComments([$value->id, "answer"]);
+            foreach ($answers[$key]->comments as $comment) {
+                $comment->html = MarkdownExtra::defaultTransform($comment->text);
+            }
         }
 
         $page->add("question/crud/show", [
             "question" => $question,
             "comments" => $questionComments,
             "answers" => $answers,
-            "questionHtml" => $questionHtml
+            "questionHtml" => $questionHtml,
+            "tags" => $tags
         ]);
 
         return $page->render([
@@ -258,6 +272,37 @@ class QuestionController implements ContainerInjectableInterface
         $page->add("question/crud/comment", [
             "question" => $question,
             "form" => $form->getHTML()
+        ]);
+
+        return $page->render([
+            "title" => "A collection of items",
+        ]);
+    }
+
+
+
+    /**
+     * Show all items by tag.
+     *
+     * @return object as a response object
+     */
+    public function tagActionGet($searchtag) : object
+    {
+        $page = $this->di->get("page");
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $questions = $question->getQuestionsFromTags($searchtag);
+
+        foreach ((array)$questions as $item) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            $item->tags = $tags;
+        }
+
+        $page->add("question/crud/tag-view", [
+            "questions" => $questions,
+            "tag" => $searchtag
         ]);
 
         return $page->render([

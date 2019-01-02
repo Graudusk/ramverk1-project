@@ -23,4 +23,18 @@ class Tag extends ActiveRecordModel
      */
     public $id;
     public $tag;
+    public $slug;
+    public $question;
+
+    public function getTags()
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->select("tag, slug, count(tag) as count")
+                        ->from($this->tableName)
+                        ->groupBy("tag")
+                        ->orderBy("count DESC")
+                        ->execute()
+                        ->fetchAll();
+    }
 }

@@ -5,6 +5,7 @@ namespace Erjh17\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Question\Question;
+use Erjh17\Tag\Tag;
 
 /**
  * Form to create an item.
@@ -63,11 +64,40 @@ class CreateForm extends FormModel
         $question->setDb($this->di->get("dbqb"));
         $question->title  = $this->form->value("title");
         $question->question  = $this->form->value("question");
-        $question->tags  = $this->form->value("tags");
+
         $question->user  = $this->getUserId();
         $question->slug  = $question->slugify($this->form->value("title"));
+
+        $query = new Question();
+        $query->setDb($this->di->get("dbqb"));
+        $res = $query->findAllCol("slug");
+
+        $slugs = array();
+        foreach ($res as $value) {
+            array_push($slugs, $value->slug);
+        }
+
+        $counter = 1;
+        $needle = $question->slug;
+        while (in_array($needle, $slugs)) {
+            $needle = $question->slug . "-$counter";
+            $counter++;
+        }
+        $question->slug = $needle;
         $question->created  = date("Y-m-d H:i:s");
         $question->save();
+
+        $questionId = $question->getLastInsertId();
+        foreach (explode(",", $this->form->value("tags")) as $value) {
+            if ($value) {
+                $tag = new Tag();
+                $tag->setDb($this->di->get("dbqb"));
+                $tag->slug  = $question->slugify($value);
+                $tag->tag = $value;
+                $tag->question = $questionId;
+                $tag->save();
+            }
+        }
         return true;
     }
 

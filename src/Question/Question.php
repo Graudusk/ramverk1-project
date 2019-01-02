@@ -59,7 +59,61 @@ class Question extends ActiveRecordModel
      *
      * @return array of object of this class
      */
-    public function findWhereJoin($columns, $where, $value, $table, $joinCondition)
+    public function getQuestionObject($type, $slug)
+    {
+        $this->checkDb();
+        $params = [$slug];
+        return $this->db->connect()
+                        ->select("Question.*, User.name")
+                        ->from($this->tableName)
+                        ->where("$type = ?")
+                        ->join("User", "User.id = Question.user")
+                        ->execute($params)
+                        ->fetchInto($this);
+    }
+    public function getQuestions()
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->select("Question.*, User.name")
+                        ->from($this->tableName)
+                        ->join("User", "User.id = Question.user")
+                        ->orderBy("updated, created DESC")
+                        ->execute()
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+    public function getUserQuestions($user)
+    {
+        $this->checkDb();
+        $params = [$user];
+        return $this->db->connect()
+                        ->select("Question.*, User.name")
+                        ->from($this->tableName)
+                        ->where("Question.user = ?")
+                        ->join("User", "User.id = Question.user")
+                        ->orderBy("updated, created DESC")
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+    /**
+     * Find and return all matching the search criteria.
+     *
+     * The search criteria `$where` of can be set up like this:
+     *  `id = ?`
+     *  `id IN [?, ?]`
+     *
+     * The `$value` can be a single value or an array of values.
+     *
+     * @param string $where to use in where statement.
+     * @param mixed  $value to use in where statement.
+     *
+     * @return array of object of this class
+     */
+    public function findAllWhereJoin($columns, $where, $value, $table, $joinCondition)
     {
         $this->checkDb();
         $params = is_array($value) ? $value : [$value];
@@ -69,6 +123,58 @@ class Question extends ActiveRecordModel
                         ->join($table, $joinCondition)
                         ->where($where)
                         ->execute($params)
-                        ->fetchInto($this);
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+    public function getQuestionsFromTags($tag)
+    {
+        $this->checkDb();
+        $params = [$tag];
+        return $this->db->connect()
+                        ->select("tag.*, question.*, user.name")
+                        ->from("tag")
+                        ->where("tag.slug = ?")
+                        ->join("question", "question.id = tag.question")
+                        ->join("user", "question.user = user.id")
+                        ->groupBy("tag.question")
+                        ->orderBy("created DESC")
+                        ->execute($params)
+                        ->fetchAll();
+    }
+
+
+
+
+    /**
+     * Find and return all matching the search criteria.
+     *
+     * The search criteria `$where` of can be set up like this:
+     *  `id = ?`
+     *  `id IN [?, ?]`
+     *
+     * The `$value` can be a single value or an array of values.
+     *
+     * @param string $where to use in where statement.
+     * @param mixed  $value to use in where statement.
+     *
+     * @return array of object of this class
+     */
+    public function findAllCol($columns)
+    {
+        $this->checkDb();
+        // $params = is_array($value) ? $value : [$value];
+        return $this->db->connect()
+                        ->select($columns)
+                        ->from($this->tableName)
+                        // ->where($where)
+                        ->execute()
+                        ->fetchAllClass(get_class($this));
+    }
+
+    public function getLastInsertId() {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->lastInsertId();
     }
 }

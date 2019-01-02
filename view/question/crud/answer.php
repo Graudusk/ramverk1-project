@@ -14,6 +14,7 @@ $my_html = MarkdownExtra::defaultTransform($question->question);
 $question = isset($question) ? $question : null;
 $comments = isset($comments) ? $comments : null;
 $answers = isset($answers) ? $answers : null;
+$tags = isset($tags) ? $tags : null;
 
 // Create urls for navigation
 $urlToTags = url("question/");
@@ -35,31 +36,63 @@ $urlToAnswer = url("answer/{$question->id}");
 
 ?>
 
-<h2><?= $question->title ?></h2>
-<p><small><?= $question->created ?></small></p>
-<p><?= $my_html ?></p>
-<p><?= $question->tags ?></p>
-
-<?= $form ?>
+<div class="question">
+<p>Posted <small><?= $question->created ?></small> by <strong><?= $question->name ?></strong></p>
+<h3><?= $question->title ?></h3>
+<div class="textBox">
+    <?= $questionHtml ?>
+</div>
+<?php if ($tags): ?>
+    <div class="tags">
+        <?php foreach ($tags as $tag): ?>
+            <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i></a>
+        <?php endforeach ?>
+    </div>
+<?php endif ?>
 
 <?php if ($comments) : ?>
     <?php foreach ($comments as $comment): ?>
+        <div class="comment">
+            <div class="textBox">
+                <p>
+                    Posted <small><?= $comment->created ?></small> by <a href="<?= url("user/view/{$comment->user}")?>"><strong><?= $comment->name ?></strong></a>
+                </p>
+                <?= $comment->html ?>
+            </div>
+        </div>
         
     <?php endforeach ?>
 <?php else: ?>
-    <p>No comments yet</p>
 <?php endif ?>
-<a href="<?= $urlToAnswer?>">Answer question</a>
+</div>
+<?= $form ?>
+
 <?php if ($answers) : ?>
     <?php foreach ($answers as $answer): ?>
-        
-        <?php if (!$answer->comments) : ?>
-            <?php foreach ($answer->comments as $comment): ?>
-                
-            <?php endforeach ?>
-        <?php else: ?>
-            <p>No comments yet</p>
-        <?php endif ?>
+        <div class="answer">
+            <p>
+                Posted <small><?= $answer->created ?></small> by <a href="<?= url("user/view/{$answer->user}")?>"><strong><?= $answer->name ?></strong></a>
+            </p>
+            <div class="textBox">
+                <?= $answer->html ?>
+            </div>
+            <p>
+                <a class="btn" href="<?= url("answer/comment/{$answer->id}") ?>">Comment <i class="fas fa-comment fa-lg"></i></a>
+            </p>
+            <?php if (isset($answer->comments)) : ?>
+                <?php foreach ($answer->comments as $comment): ?>
+                    <div class="comment">
+                        <p>
+                            Posted <small><?= $comment->created ?></small> by <a href="<?= url("user/view/{$comment->user}")?>"><strong><?= $comment->name ?></strong></a>
+                        </p>
+                        <div class="textBox">
+                            <?= $comment->html ?>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            <?php else: ?>
+            <?php endif ?>
+        </div>
     <?php endforeach ?>
 <?php else: ?>
     <p>No answers yet</p>

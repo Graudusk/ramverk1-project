@@ -8,6 +8,9 @@ use Erjh17\User\HTMLForm\UserLoginForm;
 use Erjh17\User\HTMLForm\CreateUserForm;
 use Erjh17\User\HTMLForm\EditUserForm;
 use Erjh17\User\UserSecurity;
+use Erjh17\Question\Question;
+use Erjh17\Comment\Comment;
+use Michelf\MarkdownExtra;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -143,9 +146,30 @@ class UserController implements ContainerInjectableInterface
         $user->setDb($this->di->get("dbqb"));
         $user->find("id", $userId);
 
-        $page->add("user/profile", [
+        //hämta frågor
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+
+        $questions = $question->getUserQuestions($userId);
+        //hämta kommentarer
+        $comment = new Comment();
+        $comment->setDb($this->di->get("dbqb"));
+        $questionComments = $comment->getUserQuestionComments($userId);
+        $answerComments = $comment->getUserAnswerComments($userId);
+
+        foreach ($questionComments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
+        foreach ($answerComments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
+
+        $page->add("user/view", [
             "user" => $user,
-            "avatar" => $user->getGravatar($user->email, true, 200)
+            "avatar" => $user->getGravatar($user->email, true, 200),
+            "questions" => $questions,
+            "questionComments" => $questionComments,
+            "answerComments" => $answerComments
         ]);
 
 
@@ -184,5 +208,60 @@ class UserController implements ContainerInjectableInterface
     {
         $this->di->get('session')->set('login', null);
         return $this->di->get('response')->redirect("");
+    }
+
+    /**
+     * Description.
+     *
+     * @param datatype $variable Description
+     *
+     * @throws Exception
+     *
+     * @return object as a response object
+     */
+    public function viewAction($id) : object
+    {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+
+        // $user = new User();
+
+
+        $page = $this->di->get("page");
+
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+        $user->find("id", $id);
+
+        //hämta frågor
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+
+        $questions = $question->getUserQuestions($id);
+        //hämta kommentarer
+        $comment = new Comment();
+        $comment->setDb($this->di->get("dbqb"));
+        $questionComments = $comment->getUserQuestionComments($id);
+        $answerComments = $comment->getUserAnswerComments($id);
+
+        foreach ($questionComments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
+        foreach ($answerComments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
+
+        $page->add("user/view", [
+            "user" => $user,
+            "avatar" => $user->getGravatar($user->email, true, 200),
+            "questions" => $questions,
+            "questionComments" => $questionComments,
+            "answerComments" => $answerComments
+        ]);
+
+
+        return $page->render([
+            "title" => "User profile page",
+        ]);
     }
 }

@@ -51,16 +51,16 @@ class Answer extends ActiveRecordModel
      * @param mixed  $value to use in where statement.
      *
      * @return array of object of this class
-     */
-    public function findAllWhereJoin($columns, $where, $value, $table, $joinCondition)
+     *///"Answer.*, User.name", "question = ?", $question->id, "User", "User.id = question"
+    public function findAllAnswers($value)
     {
         $this->checkDb();
         $params = is_array($value) ? $value : [$value];
         return $this->db->connect()
-                        ->select($columns)
+                        ->select("Answer.*, User.name")
                         ->from($this->tableName)
-                        ->join($table, $joinCondition)
-                        ->where($where)
+                        ->join("User", "User.id = Answer.id")
+                        ->where("answer.question = ?")
                         ->execute($params)
                         ->fetchAllClass(get_class($this));
     }

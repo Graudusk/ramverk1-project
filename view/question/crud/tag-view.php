@@ -12,17 +12,10 @@ namespace Anax\View;
 // Gather incoming variables and use default values if not set
 $questions = isset($questions) ? $questions : null;
 
-// Create urls for navigation
-$urlToCreate = url("question/create");
-$urlToDelete = url("question/delete");
 
 
 
-?><h1>View all questions</h1>
-
-<p>
-    <a class="btn blue" href="<?= $urlToCreate ?>">Ask question</a>
-</p>
+?><h1>View all questions with tag '<?= $tag ?>'</h1>
 
 <?php if (!$questions) : ?>
     <p>There are no questions to show.</p>
@@ -32,17 +25,11 @@ endif;
 ?>
 
 <?php foreach ($questions as $item) : ?>
+
 <article class="questionSummary">
 
     <h3><a href="<?= url("question/show/{$item->slug}"); ?>"><?= $item->title ?></a></h3>
-    <p>
-        Posted <small><?= $item->created ?></small> by <a href="<?= url("user/view/{$item->user}")?>"><strong><?= $item->name ?></strong></a>
-    </p>
-    <?php if ($item->updated): ?>
-        <p>
-            Updated <small><?= $item->updated ?></small>
-        </p>
-    <?php endif ?>
+    <p>Posted <small><?= $item->created ?></small> by <strong><?= $item->name ?></strong></p>
     <?php if ($item->tags): ?>
         <div class="tags">
             <?php foreach ($item->tags as $tag): ?>

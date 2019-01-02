@@ -219,8 +219,23 @@ html.hgrid .inner-wrap {
     font-size: 1.5em;
 }
 
+.rm-desktop li {
+    a, a:hover, a:focus, a:visited {
+        color: #f6f6f6;
+        text-decoration: none;
+    }
+}
+
 .rm-desktop li ul {
     background-color: #424242;
+}
+
+.rm-desktop li a {
+    margin-top: 10px;
+
+    &.profileLink {
+        margin: 0;
+    }
 }
 
 .wrap-sidebar .block h4 {
@@ -234,7 +249,7 @@ html.hgrid .inner-wrap {
  * My settings.
  */
 @bgColorHtml: #424242;
-@bgColorBody: #eee;
+@bgColorBody: #f6f6f6;
 @colorBody:   #333;
 
 /**
@@ -330,20 +345,13 @@ pre {
         font-weight: 600;
     }
     &.code {
+        border-color: #ddd;
         white-space: pre;
         background-color: #eee;
         color: #222;
         padding: 0.5em;
         border-left: 6px solid #aaa;
     }
-}
-
-
-input[type="text"], input[type="number"], select, button, textarea {
-    color: #fff;
-    background-color: #222;
-    padding: 5px 10px;
-    border: #ddd solid 2px;
 }
 
 select {
@@ -362,7 +370,8 @@ select {
 }
 
 .outer-wrap-header {
-    background-color: #0c0c11;
+    background-color: #16161b;
+    margin: 0;
 }
 
 .inner-wrap {
@@ -370,9 +379,10 @@ select {
 }
 
 .region-main {
-    // width: auto;
-    // margin: auto;
-    // padding: 40px 80px;
+    max-width: 800px;
+    margin: auto;
+    display: block;
+    float: none;
 }
 
 .outer-wrap-header {
@@ -397,23 +407,34 @@ select {
     padding: 0.5em;
 }
 
-.question, .answer, .comment {
-    background: #ccc;
+.question, .answer, .comment, .htmlform {
+    background: #fff;
     padding: 15px;
     margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
     p {
         margin: 10px 0;
     }
 
+    .header {
+        padding: 20px 0;
+        .tools {
+            margin-top: -20px;
+            .float-right;
+        }
+    }
+
     .textBox {
-        padding: 12px;
-        background: #ddd;
+        padding: 24px 12px;
+        background: #f6f6f6;
         margin: 0;
     }
 }
 
 .comment {
-    background: #bbb;
+    background: #f6f6f6;
+    border-left: #ddd solid 15px;
+    margin-top: 15px;
     .textBox {
         padding: 0;
         background: transparent;
@@ -422,24 +443,71 @@ select {
 
 .answer {
     margin-left: 60px;
-    background: #ccc;
+    background: #fff;
 }
 
-a, a:hover, a:visited {
-    color: #3e479e;
-}
-
-a.btn {
-    border: 1px solid #bbb;
-    padding: 6px;
-    background: #07091a;
-    color: #bbb;
+a, a:hover, a:visited, a:focus {
     text-decoration: none;
-    border-radius: 3px;
+    color: #3a44a1;
+}
+
+.btn, input[type="text"], input[type="submit"], input[type="reset"], input[type="number"], select, button, textarea {
+    // color: #222;
+    background-color: #fff;
+    padding: 6px 12px;
     margin: 5px 0;
+    border-radius: 3px;
     display: inline-block;
+    border: #ddd solid 2px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f6f6f6;
+    }
+}
+
+.btn.blue {
+    border: 1px solid #616ddb;
+    color: #f6f6f6;
+    background: #202a86;
 
     &:hover {
         background: #151a48;
     }
+}
+
+.questionSummary {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    background: #fff;
+    margin-bottom: 15px;
+    h3 {
+        text-transform: capitalize;
+        border: none;
+    }
+}
+
+div.code, pre code {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #eee;
+}
+
+fieldset {
+    border: #ddd solid 2px;
+}
+
+h1, h2, h3 {
+    border-bottom: none;
+}
+
+.tag {
+    display: inline-block;
+    padding: 3px 6px;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    margin: 0;
 }

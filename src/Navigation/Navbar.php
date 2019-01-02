@@ -151,10 +151,10 @@ class Navbar
                 $user = new \Erjh17\User\User();
                 $logoutUrl = $this->url('user/logout');
                 $profileUrl = $this->url('user/profile');
-                $html .= "<li{$class}><a href='{$profileUrl}'>{$user->getGravatar($this->di->session->get('login')['email'], true, 20)}  {$this->di->session->get('login')['name']}</a></li><li><a href='{$logoutUrl}'>Logga ut</a></li>";
+                $html .= "<li{$class}><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($this->di->session->get('login')['email'], true, 20)}  {$this->di->session->get('login')['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
             } else {
                 $loginUrl = $this->url('user/login');
-                $html .= "\n<li{$class}><a href='{$loginUrl}'>Logga in</a></li>\n";
+                $html .= "\n<li{$class}><a href='{$loginUrl}'>Login</a></li>\n";
             }
 
             // Return the menu

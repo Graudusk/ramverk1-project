@@ -18,13 +18,10 @@ $questionHtml = isset($questionHtml) ? $questionHtml : null;
 
 // Create urls for navigation
 $urlToTags = url("question/");
-// var_dump($answers);
-
-
-?><h1>View question</h1>
+?>
 
 <p>
-    <a href="<?= $urlToTags ?>">Show all</a>
+    <a class="btn" href="<?= $urlToTags ?>">Show all</a>
 </p>
 
 <?php if (!$question) : ?>
@@ -32,13 +29,27 @@ $urlToTags = url("question/");
 <?php
     return;
 endif;
+
 $urlToAnswer = url("answer/write/{$question->id}");
 $urlToComment = url("question/comment/{$question->id}");
+$urlToUpdate = url("question/update/{$question->id}");
+$urlToDelete = url("question/delete/{$question->id}");
 
 ?>
+<h1><?= $question->title ?></h1>
 <div class="question">
-<p>Posted <small><?= $question->created ?></small> by <strong><?= $question->name ?></strong></p>
-<h3><?= $question->title ?></h3>
+    <div class="header">
+<?php if ($question->isUser): ?>
+    <div class="tools">
+        <a href="<?= $urlToUpdate?>" class="btn">Update <i class="fas fa-edit fa-lg fa-flip-horizontal"></i></a>
+        <a href="<?= $urlToDelete?>" class="btn">Delete <i class="fas fa-times fa-lg fa-flip-horizontal"></i></a>
+    </div>
+<?php endif ?>
+<!-- <p> -->
+    Posted <small><?= $question->created ?></small> by <strong><?= $question->name ?></strong>
+<!-- </p> -->
+</div>
+<!-- <h3><?= $question->title ?></h3> -->
 <div class="textBox">
     <?= $questionHtml ?>
 </div>
@@ -48,6 +59,14 @@ $urlToComment = url("question/comment/{$question->id}");
     <a class="btn" href="<?= $urlToAnswer?>">Answer <i class="fas fa-share fa-lg fa-flip-horizontal"></i></a>
     <a class="btn" href="<?= $urlToComment ?>">Comment <i class="fas fa-comment fa-lg"></i></a>
 </p>
+<?php if ($tags): ?>
+    <div class="tags">
+        <?php foreach ($tags as $tag): ?>
+            <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i></a>
+        <?php endforeach ?>
+    </div>
+    
+<?php endif ?>
 
 <?php if ($comments) : ?>
     <?php foreach ($comments as $comment): ?>
@@ -80,10 +99,10 @@ $urlToComment = url("question/comment/{$question->id}");
                 <?php foreach ($answer->comments as $comment): ?>
                     <div class="comment">
                         <p>
-                            Posted <small><?= $answer->created ?></small> by <a href="<?= url("user/view/{$answer->user}")?>"><strong><?= $answer->name ?></strong></a>
+                            Posted <small><?= $comment->created ?></small> by <a href="<?= url("user/view/{$comment->user}")?>"><strong><?= $comment->name ?></strong></a>
                         </p>
                         <div class="textBox">
-                            <?= $answer->html ?>
+                            <?= $comment->html ?>
                         </div>
                     </div>
                 <?php endforeach ?>

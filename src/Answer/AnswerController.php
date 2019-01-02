@@ -12,6 +12,8 @@ use Erjh17\Answer\HTMLForm\UpdateForm;
 use Erjh17\Comment\HTMLForm\CommentForm;
 use Erjh17\User\UserSecurity;
 use Erjh17\Question\Question;
+use Erjh17\Comment\Comment;
+use Michelf\MarkdownExtra;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -152,12 +154,41 @@ class AnswerController implements ContainerInjectableInterface
 
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $questionId);
+        $question->getQuestionObject("Question.id", $questionId);
+        $questionHtml = MarkdownExtra::defaultTransform($question->question);
         // var_dump($question);
+
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+
+        $answers = $answer->findAllAnswers($question->id);
+
+        $comment = new Comment();
+        $comment->setDb($this->di->get("dbqb"));
+
+        $questionComments = $comment->findAllWhereJoin("Comment.*, User.name", "post = ? AND type = ?", [$question->id, "question"], "User", "User.id = user");
+
+        foreach ($questionComments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
+
+        foreach ((array)$answers as $key => $value) {
+            $value->html = MarkdownExtra::defaultTransform($value->answer);
+            $answerComment = new Comment();
+            $answerComment->setDb($this->di->get("dbqb"));
+
+            $answers[$key]->comments = $answerComment->findAllComments([$value->id, "answer"]);
+            foreach ($answers[$key]->comments as $comment) {
+                $comment->html = MarkdownExtra::defaultTransform($comment->text);
+            }
+        }
 
         $page->add("question/crud/answer", [
             "question" => $question,
-            "form" => $form->getHTML()
+            "form" => $form->getHTML(),
+            "comments" => $questionComments,
+            "answers" => $answers,
+            "questionHtml" => $questionHtml
         ]);
 
         return $page->render([

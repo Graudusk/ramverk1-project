@@ -5,6 +5,7 @@ namespace Erjh17\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Question\Question;
+use Erjh17\User\UserSecurity;
 
 /**
  * Form to update an item.
@@ -78,7 +79,9 @@ class UpdateForm extends FormModel
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $id);
-        $this->userAuth($question->user);
+
+        $security = new UserSecurity($this->di);
+        $security->userAuth($question->user);
         return $question;
     }
 

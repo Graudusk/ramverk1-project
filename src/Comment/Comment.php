@@ -56,4 +56,49 @@ class Comment extends ActiveRecordModel
                         ->execute($params)
                         ->fetchAllClass(get_class($this));
     }
+    public function findAllComments($value)
+    {
+        $this->checkDb();
+        $params = is_array($value) ? $value : [$value];
+        return $this->db->connect()
+                        ->select("Comment.*, User.name")
+                        ->from($this->tableName)
+                        ->join("User", "User.id = user")
+                        ->where("post = ? AND type = ?")
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+    public function getUserQuestionComments($user)
+    {
+        $this->checkDb();
+        $params = [$user];
+        return $this->db->connect()
+                        ->select("Comment.*, User.name, Question.*")
+                        ->from($this->tableName)
+                        ->where("Comment.user = ?")
+                        ->join("User", "User.id = Comment.user")
+                        // ->join("Answer", "Answer.id = Comment.post AND Comment.type = 'answer'")
+                        ->join("Question", "Question.id = Comment.post AND Comment.type = 'question'")
+                        ->orderBy("updated, created DESC")
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
+
+    public function getUserAnswerComments($user)
+    {
+        $this->checkDb();
+        $params = [$user];
+        return $this->db->connect()
+                        ->select("Comment.*, User.name, Question.*")
+                        ->from($this->tableName)
+                        ->where("Comment.user = ?")
+                        ->join("User", "User.id = Comment.user")
+                        ->join("Answer", "Answer.id = Comment.post AND Comment.type = 'answer'")
+                        ->join("Question", "Question.id = Answer.question")
+                        ->orderBy("updated, created DESC")
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
 }

@@ -5,6 +5,9 @@ namespace Erjh17\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Question\Question;
+use Erjh17\Answer\Answer;
+use Erjh17\Tag\Tag;
+use Erjh17\Comment\Comment;
 use Erjh17\User\UserSecurity;
 
 /**
@@ -46,12 +49,6 @@ class DeleteForm extends FormModel
                     "readonly" => true,
                     "validation" => ["not_empty"],
                     "value" => html_entity_decode($question->question),
-                ],
-
-                "tags" => [
-                    "type" => "text",
-                    "readonly" => true,
-                    "value" => html_entity_decode($question->tags),
                 ],
 
                 "submit" => [
@@ -138,6 +135,19 @@ class DeleteForm extends FormModel
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $this->form->value("id"));
         $question->delete();
+
+        $answers = new Answer();
+        $answers->setDb($this->di->get("dbqb"));
+        $answers->deleteWhere("question = ?", $this->form->value("id"));
+
+        $tags = new Tag();
+        $tags->setDb($this->di->get("dbqb"));
+        $tags->deleteWhere("question = ?", $this->form->value("id"));
+        
+        $comments = new Comment();
+        $comments->setDb($this->di->get("dbqb"));
+        $comments->deleteWhere("post = ? AND type = 'question'", $this->form->value("id"));
+
         return true;
     }
 

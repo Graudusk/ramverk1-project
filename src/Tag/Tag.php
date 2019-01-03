@@ -26,13 +26,14 @@ class Tag extends ActiveRecordModel
     public $slug;
     public $question;
 
-    public function getTags()
+    public function getTags($limit = 1000000)
     {
         $this->checkDb();
         return $this->db->connect()
                         ->select("tag, slug, count(tag) as count")
                         ->from($this->tableName)
                         ->groupBy("tag")
+                        ->limit($limit)
                         ->orderBy("count DESC")
                         ->execute()
                         ->fetchAll();

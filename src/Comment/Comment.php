@@ -81,7 +81,7 @@ class Comment extends ActiveRecordModel
                         ->join("User", "User.id = Comment.user")
                         // ->join("Answer", "Answer.id = Comment.post AND Comment.type = 'answer'")
                         ->join("Question", "Question.id = Comment.post AND Comment.type = 'question'")
-                        ->orderBy("updated, created DESC")
+                        ->orderBy("Comment.updated, Comment.created DESC")
                         ->execute($params)
                         ->fetchAllClass(get_class($this));
     }
@@ -97,7 +97,7 @@ class Comment extends ActiveRecordModel
                         ->join("User", "User.id = Comment.user")
                         ->join("Answer", "Answer.id = Comment.post AND Comment.type = 'answer'")
                         ->join("Question", "Question.id = Answer.question")
-                        ->orderBy("updated, created DESC")
+                        ->orderBy("Comment.updated, Comment.created DESC")
                         ->execute($params)
                         ->fetchAllClass(get_class($this));
     }

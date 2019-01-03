@@ -84,4 +84,31 @@ class User extends ActiveRecordModel
     }
 
 
+    public function getUsers($limit = 1000000)
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        // ->select("User.*, count(Question.id) as qcount, count(Answer.id) as acount, count(Comment.id) as ccount")
+                        ->select("
+    User.id,
+    User.name,
+    User.email,
+    (SELECT count(Question.id) FROM Question WHERE Question.user = User.id) as qcount,
+    (SELECT count(Answer.id) FROM Answer WHERE Answer.user = User.id) as acount,
+    (SELECT count(Comment.id) FROM Comment WHERE Comment.user = User.id) as ccount,
+    -- count(User.id) as countsum
+    ((SELECT count(Question.id) FROM Question WHERE Question.user = User.id) +
+    (SELECT count(Answer.id) FROM Answer WHERE Answer.user = User.id) +
+    (SELECT count(Comment.id) FROM Comment WHERE Comment.user = User.id)) as countsum")
+                        ->from($this->tableName)
+                        ->leftJoin("Question", "User.id = Question.user")
+                        ->groupBy("User.id")
+                        ->limit($limit)
+                        ->orderBy("countSum DESC")
+                        ->execute()
+                        ->fetchAll();
+                        // ->getSql();
+    }
+
+
 }

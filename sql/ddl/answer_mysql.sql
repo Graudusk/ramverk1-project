@@ -25,6 +25,11 @@ USE anaxdb;
 -- Ensure UTF8 on the database connection
 SET NAMES utf8;
 
+    "answer" TEXT NOT NULL,
+    "user" INT,
+    "question" INT,
+    "created" TIMESTAMP,
+    "updated" DATETIME
 
 
 --
@@ -33,6 +38,9 @@ SET NAMES utf8;
 DROP TABLE IF EXISTS Answer;
 CREATE TABLE Answer (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `column1` VARCHAR(256) NOT NULL,
-    `column2` VARCHAR(256) NOT NULL
+    `answer` TEXT NOT NULL,
+    `user` INTEGER NOT NULL,
+    `question` INTEGER NOT NULL,
+    `created` DATETIME,
+    `updated` DATETIME
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_swedish_ci;

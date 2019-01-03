@@ -59,21 +59,12 @@ class QuestionController implements ContainerInjectableInterface
         $page = $this->di->get("page");
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-
-        // $questions = $question->findAll();
         $questions = $question->getQuestions();
-        // $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         foreach ((array)$questions as $item) {
             $tag = new Tag();
             $tag->setDb($this->di->get("dbqb"));
             $tags = $tag->findAllWhere("question = ?", $item->id);
-            // $tags = explode(',', $item->tags);
-            // $html = "";
-            // foreach ($tags as $tag) {
-            //     $tagUrl = $this->di->get('url')->create("tag/{$tag}");
-            //     $html .= "<a class='tag' href='{$tagUrl}'>{$tag}</a>";
-            // }
             $item->tags = $tags;
         }
 

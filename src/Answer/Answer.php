@@ -59,7 +59,7 @@ class Answer extends ActiveRecordModel
         return $this->db->connect()
                         ->select("Answer.*, User.name")
                         ->from($this->tableName)
-                        ->join("User", "User.id = Answer.id")
+                        ->join("User", "User.id = Answer.user")
                         ->where("answer.question = ?")
                         ->execute($params)
                         ->fetchAllClass(get_class($this));

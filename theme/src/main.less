@@ -482,9 +482,13 @@ a, a:hover, a:visited, a:focus {
     padding: 15px;
     background: #fff;
     margin-bottom: 15px;
-    h3 {
-        text-transform: capitalize;
+    h3, h4 {
         border: none;
+        margin: 0;
+    }
+    p {
+        margin-top: 12px;
+        margin-bottom: 12px;
     }
 }
 
@@ -510,4 +514,25 @@ h1, h2, h3 {
     border: 2px solid #ddd;
     border-radius: 3px;
     margin: 0;
+}
+.statCounterBox {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+
+    .statCounter {
+        display: inline-block;
+        width: 18%;
+        text-align: center;
+        padding: 10px;
+        border: 2px solid #f6f6f6;
+        margin: 10px 0;
+        font-size: 12px;
+
+        span {
+            font-size: 24px;
+            display: block;
+            text-align: center;
+        }
+    }
 }

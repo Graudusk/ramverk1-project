@@ -46,7 +46,8 @@ $urlToDelete = url("question/delete/{$question->id}");
     </div>
 <?php endif ?>
 <!-- <p> -->
-    Posted <small><?= $question->created ?></small> by <strong><?= $question->name ?></strong>
+    Posted <small><?= $question->created ?></small> by <a href="<?= url("user/view/{$question->user}")?>"><strong><?= $question->name ?></strong></a>
+
 <!-- </p> -->
 </div>
 <!-- <h3><?= $question->title ?></h3> -->

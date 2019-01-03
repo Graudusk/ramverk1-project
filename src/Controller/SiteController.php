@@ -1,10 +1,13 @@
 <?php
-
-namespace Erjh17\Question;
+namespace Anax\Controller;
+// var_dump($_SERVER);
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
+use Erjh17\Question\Question;
 use Erjh17\User\UserSecurity;
+use Erjh17\Tag\Tag;
+use Erjh17\User\User;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -45,30 +48,42 @@ class SiteController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function actionGet() : object
+    public function indexAction() : object
     {
         $page = $this->di->get("page");
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
+        $questions = $question->getQuestions(4);
 
-        $questions = $question->findAll();
-
-        foreach ($questions as $item) {
-            $tags = explode(',', $item->tags);
-            $html = "";
-            foreach ($tags as $tag) {
-                $tagUrl = $this->di->get('url')->create("tag/{$tag}");
-                $html .= "<a class='tag' href='{$tagUrl}'>{$tag}</a>";
-            }
-            $item->tagsHtml = $html;
+        foreach ((array)$questions as $item) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            $item->tags = $tags;
         }
 
-        $page->add("question/crud/view-all", [
+        $popularTag = new Tag();
+        $popularTag->setDb($this->di->get("dbqb"));
+        $popularTags = $popularTag->getTags(3);
+
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+        $users = $user->getUsers(3);
+
+        foreach ($users as $value) {
+            $value->avatar = $user->getGravatar($value->email, true, 40);
+        }
+
+        // var_dump($users);
+
+        $page->add("site/index", [
             "questions" => $questions,
+            "popularTags" => $popularTags,
+            "users" => $users
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Home",
         ]);
     }
 
@@ -79,7 +94,7 @@ class SiteController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function createAction() : object
+    public function homeActionGet() : object
     {
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();

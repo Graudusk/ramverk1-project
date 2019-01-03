@@ -71,7 +71,7 @@ class Question extends ActiveRecordModel
                         ->execute($params)
                         ->fetchInto($this);
     }
-    public function getQuestions()
+    public function getQuestions($limit = 1000000)
     {
         $this->checkDb();
         return $this->db->connect()
@@ -79,6 +79,7 @@ class Question extends ActiveRecordModel
                         ->from($this->tableName)
                         ->join("User", "User.id = Question.user")
                         ->orderBy("updated, created DESC")
+                        ->limit($limit)
                         ->execute()
                         ->fetchAllClass(get_class($this));
     }

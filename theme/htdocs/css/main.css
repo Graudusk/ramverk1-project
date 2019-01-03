@@ -7398,9 +7398,14 @@ textarea:hover {
   background: #fff;
   margin-bottom: 15px;
 }
-.questionSummary h3 {
-  text-transform: capitalize;
+.questionSummary h3,
+.questionSummary h4 {
   border: none;
+  margin: 0;
+}
+.questionSummary p {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 div.code,
 pre code {
@@ -7424,4 +7429,23 @@ h3 {
   border: 2px solid #ddd;
   border-radius: 3px;
   margin: 0;
+}
+.statCounterBox {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+.statCounterBox .statCounter {
+  display: inline-block;
+  width: 18%;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #f6f6f6;
+  margin: 10px 0;
+  font-size: 12px;
+}
+.statCounterBox .statCounter span {
+  font-size: 24px;
+  display: block;
+  text-align: center;
 }

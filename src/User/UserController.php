@@ -10,6 +10,7 @@ use Erjh17\User\HTMLForm\EditUserForm;
 use Erjh17\User\UserSecurity;
 use Erjh17\Question\Question;
 use Erjh17\Comment\Comment;
+use Erjh17\Tag\Tag;
 use Michelf\MarkdownExtra;
 
 // use Anax\Route\Exception\ForbiddenException;
@@ -59,12 +60,20 @@ class UserController implements ContainerInjectableInterface
     {
         $page = $this->di->get("page");
 
-        $page->add("anax/v2/article/default", [
-            "content" => "An index page",
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+        $users = $user->getUsers(3);
+
+        foreach ($users as $value) {
+            $value->avatar = $user->getGravatar($value->email, true, 40);
+        }
+
+        $page->add("user/view-all", [
+            "users" => $users,
         ]);
 
         return $page->render([
-            "title" => "A index page",
+            "title" => "Show all users",
         ]);
     }
 
@@ -90,7 +99,7 @@ class UserController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A login page",
+            "title" => "Login on site",
         ]);
     }
 
@@ -116,7 +125,7 @@ class UserController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A create user page",
+            "title" => "Register user",
         ]);
     }
 
@@ -151,6 +160,14 @@ class UserController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
 
         $questions = $question->getUserQuestions($userId);
+
+        foreach ((array)$questions as $item) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            $item->tags = $tags;
+        }
+
         //hämta kommentarer
         $comment = new Comment();
         $comment->setDb($this->di->get("dbqb"));
@@ -164,7 +181,7 @@ class UserController implements ContainerInjectableInterface
             $comment->html = MarkdownExtra::defaultTransform($comment->text);
         }
 
-        $page->add("user/view", [
+        $page->add("user/profile", [
             "user" => $user,
             "avatar" => $user->getGravatar($user->email, true, 200),
             "questions" => $questions,
@@ -224,9 +241,6 @@ class UserController implements ContainerInjectableInterface
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
-        // $user = new User();
-
-
         $page = $this->di->get("page");
 
         $user = new User();
@@ -238,6 +252,14 @@ class UserController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
 
         $questions = $question->getUserQuestions($id);
+
+        foreach ((array)$questions as $item) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            $item->tags = $tags;
+        }
+
         //hämta kommentarer
         $comment = new Comment();
         $comment->setDb($this->di->get("dbqb"));

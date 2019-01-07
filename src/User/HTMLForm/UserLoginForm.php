@@ -72,9 +72,9 @@ class UserLoginForm extends FormModel
 
         // $user is null if user is not found
         if (!$user || !password_verify($password, $user->password)) {
-           $this->form->rememberValues();
-           $this->form->addOutput("User or password did not match.");
-           return false;
+            $this->form->rememberValues();
+            $this->form->addOutput("User or password did not match.");
+            return false;
         }
 
         $sessionUser = array(

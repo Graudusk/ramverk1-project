@@ -21,12 +21,12 @@ $urlToDelete = url("question/delete");
 ?><h1>View all questions</h1>
 
 <p>
-    <a class="btn blue" href="<?= $urlToCreate ?>">Ask question</a>
+    <a class="btn blue" href="<?= $urlToCreate ?>"><i class="fas fa-question fa-lg"></i>&nbsp;Ask question</a>
 </p>
 
 <?php if (!$questions) : ?>
     <p>There are no questions to show.</p>
-<?php
+    <?php
     return;
 endif;
 ?>
@@ -38,14 +38,14 @@ endif;
     <p>
         Posted <small><?= $item->created ?></small> by <a href="<?= url("user/view/{$item->user}")?>"><strong><?= $item->name ?></strong></a>
     </p>
-    <?php if ($item->updated): ?>
+    <?php if ($item->updated) : ?>
         <p>
             Updated <small><?= $item->updated ?></small>
         </p>
     <?php endif ?>
-    <?php if ($item->tags): ?>
+    <?php if ($item->tags) : ?>
         <div class="tags">
-            <?php foreach ($item->tags as $tag): ?>
+            <?php foreach ($item->tags as $tag) : ?>
                 <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag btn"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i></a>
             <?php endforeach ?>
         </div>

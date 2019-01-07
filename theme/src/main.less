@@ -431,6 +431,10 @@ select {
     }
 }
 
+.htmlform {
+    border: none;
+}
+
 .comment {
     background: #f6f6f6;
     border-left: #ddd solid 15px;
@@ -460,11 +464,20 @@ a, a:hover, a:visited, a:focus {
     display: inline-block;
     border: #ddd solid 2px;
     text-decoration: none;
+}
+
+.btn, input[type="submit"], input[type="reset"], select, button {
     cursor: pointer;
 
     &:hover {
         background-color: #f6f6f6;
     }
+}
+
+textarea[readonly="readonly"], input[readonly="readonly"] {
+    cursor: not-allowed;
+    background: #ccc;
+    color: #666;
 }
 
 .btn.blue {
@@ -508,13 +521,18 @@ h1, h2, h3 {
     border-bottom: none;
 }
 
-.tag {
-    display: inline-block;
-    padding: 3px 6px;
-    border: 2px solid #ddd;
-    border-radius: 3px;
-    margin: 0;
+.tags {
+    margin: 10px 0;
+
+    .tag {
+        display: inline-block;
+        padding: 3px 6px;
+        border: 2px solid #ddd;
+        border-radius: 3px;
+        margin: 0;
+    }
 }
+
 .statCounterBox {
     display: flex;
     flex-flow: row wrap;

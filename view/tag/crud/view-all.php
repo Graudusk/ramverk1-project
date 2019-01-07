@@ -12,17 +12,17 @@ namespace Anax\View;
 // Gather incoming variables and use default values if not set
 $tags = isset($tags) ? $tags : null;
 
-?><h1>View all tags</h1>
+?><h1>Show all tags</h1>
 
 <?php if (!$tags) : ?>
     <p>There are no tags to show.</p>
-<?php
+    <?php
     return;
 endif;
 ?>
 
 <?php foreach ($tags as $tag) : ?>
-    <?php if ($tag): ?>
+    <?php if ($tag) : ?>
         <h3>
             <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag btn"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i>&nbsp;(<?=$tag->count?>)</a>
         </h3>

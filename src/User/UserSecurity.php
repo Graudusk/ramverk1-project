@@ -5,7 +5,6 @@ namespace Erjh17\User;
 // use Anax\Commons\ContainerInjectableInterface;
 // use Anax\Commons\ContainerInjectableTrait;
 use Psr\Container\ContainerInterface;
-// use Erjh17\User\User;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;

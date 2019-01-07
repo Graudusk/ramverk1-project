@@ -47,11 +47,6 @@ class UpdateForm extends FormModel
                     "value" => html_entity_decode($question->question),
                 ],
 
-                "tags" => [
-                    "type" => "text",
-                    "value" => html_entity_decode($question->tags),
-                ],
-
                 "submit" => [
                     "type" => "submit",
                     "value" => "Save",
@@ -71,7 +66,7 @@ class UpdateForm extends FormModel
      * Get details on item to load form with.
      *
      * @param integer $id get details on item with id.
-     * 
+     *
      * @return Question
      */
     public function getItemDetails($id) : object
@@ -100,7 +95,6 @@ class UpdateForm extends FormModel
         $question->find("id", $this->form->value("id"));
         $question->title  = $this->form->value("title");
         $question->question  = $this->form->value("question");
-        $question->tags  = $this->form->value("tags");
         $question->user  = $this->getUserId();
         $question->slug  = $question->slugify($this->form->value("title"));
         $question->updated  = date("Y-m-d H:i:s");
@@ -112,7 +106,7 @@ class UpdateForm extends FormModel
      * Get details on item to load form with.
      *
      * @param integer $id get details on item with id.
-     * 
+     *
      * @return Book
      */
     public function getUserId()
@@ -120,7 +114,8 @@ class UpdateForm extends FormModel
         return $this->di->session->get('login')['id'];
     }
 
-    public function userAuth($user) {
+    public function userAuth($user)
+    {
         // var_dump($user);
         // var_dump($this->di->session->get("login")['id']);
         if ($this->di->session->get("login") && $this->di->session->get("login")['id'] == $user) {

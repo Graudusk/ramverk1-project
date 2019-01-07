@@ -34,8 +34,6 @@ class Answer extends ActiveRecordModel
     // "question" INT,
     // "created" TIMESTAMP,
     // "updated" DATETIME
-    // 
-    // 
 
 
     /**
@@ -60,9 +58,21 @@ class Answer extends ActiveRecordModel
                         ->select("Answer.*, User.name")
                         ->from($this->tableName)
                         ->join("User", "User.id = Answer.user")
-                        ->where("answer.question = ?")
+                        ->where("Answer.question = ?")
                         ->execute($params)
                         ->fetchAllClass(get_class($this));
     }
 
+    public function findAnswer($value)
+    {
+        $this->checkDb();
+        $params = is_array($value) ? $value : [$value];
+        return $this->db->connect()
+                        ->select("Answer.*, User.name")
+                        ->from($this->tableName)
+                        ->join("User", "User.id = Answer.user")
+                        ->where("Answer.id = ?")
+                        ->execute($params)
+                        ->fetchInto($this);
+    }
 }

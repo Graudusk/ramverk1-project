@@ -13,14 +13,13 @@ namespace Anax\View;
 $items = isset($items) ? $items : null;
 
 // Create urls for navigation
-$urlToViewItems = url("question");
+$urlToQuestions = url("question");
 
 
 
-?><h1>Ask a question</h1>
-
-<?= $form ?>
-
-<p>
-    <a href="<?= $urlToViewItems ?>">View all</a>
+?><p>
+    <a class="btn" href="<?= $urlToQuestions ?>"><i class="fas fa-angle-double-left fa-lg"></i>&nbsp;Back to questions</a>
 </p>
+
+<h1>Ask a question</h1>
+<?= $form ?>

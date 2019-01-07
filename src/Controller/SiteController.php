@@ -1,6 +1,6 @@
 <?php
+
 namespace Anax\Controller;
-// var_dump($_SERVER);
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
@@ -94,20 +94,14 @@ class SiteController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function homeActionGet() : object
+    public function aboutActionGet() : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
         $page = $this->di->get("page");
-        $form = new CreateForm($this->di);
-        $form->check();
 
-        $page->add("question/crud/create", [
-            "form" => $form->getHTML(),
-        ]);
+        $page->add("site/about");
 
         return $page->render([
-            "title" => "Create an item",
+            "title" => "About",
         ]);
     }
 

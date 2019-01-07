@@ -1,14 +1,14 @@
 <?php
 
-namespace Anax\Controller;
+namespace Erjh17\Tag;
 
 use Anax\DI\DIFactoryConfig;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test the FlatFileContentController.
+ * Test the TagController.
  */
-class FlatFileContentControllerTest extends TestCase
+class TagControllerTest extends TestCase
 {
     
     // Create the di container.
@@ -31,8 +31,17 @@ class FlatFileContentControllerTest extends TestCase
         // View helpers uses the global $di so it needs its value
         $di = $this->di;
 
+
+        $sessionUser = array(
+            'name' => "admin",
+            'id' => "1",
+            'email' => "test@test.com"
+        );
+        $_SERVER["SERVER_NAME"] = "test";
+
+        $this->di->get("session")->set('login', $sessionUser);
         // Setup the controller
-        $this->controller = new FlatFileContentController();
+        $this->controller = new TagController();
         $this->controller->setDI($this->di);
         //$this->controller->initialize();
     }
@@ -44,11 +53,17 @@ class FlatFileContentControllerTest extends TestCase
      */
     public function testIndexAction()
     {
-        $res = $this->controller->catchAll();
+        // $controller = new TagController();
+        // $controller->initialize();
+        $res = $this->controller->IndexActionGet();
         $this->assertInstanceOf("\Anax\Response\Response", $res);
+        // $this->assertEquals("Tag Tag", $res);
+
+
+        // $res = $this->controller->indexAction();
 
         $body = $res->getBody();
-        $exp = "| Travellers</title>";
+        $exp = "<title>Show all tags | Travellers</title>";
         $this->assertContains($exp, $body);
     }
 }

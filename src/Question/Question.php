@@ -32,7 +32,7 @@ class Question extends ActiveRecordModel
      * Create a slug of a string, to be used as url.
      *
      * @param string $str the string to format as slug.
-     * 
+     *
      * @return str the formatted slug.
      */
     public function slugify($str)
@@ -133,12 +133,12 @@ class Question extends ActiveRecordModel
         $this->checkDb();
         $params = [$tag];
         return $this->db->connect()
-                        ->select("tag.*, question.*, user.name")
+                        ->select("Tag.*, Question.*, User.name")
                         ->from("tag")
-                        ->where("tag.slug = ?")
-                        ->join("question", "question.id = tag.question")
-                        ->join("user", "question.user = user.id")
-                        ->groupBy("tag.question")
+                        ->where("Tag.slug = ?")
+                        ->join("question", "Question.id = Tag.question")
+                        ->join("user", "Question.user = User.id")
+                        ->groupBy("Tag.question")
                         ->orderBy("created DESC")
                         ->execute($params)
                         ->fetchAll();
@@ -173,7 +173,8 @@ class Question extends ActiveRecordModel
                         ->fetchAllClass(get_class($this));
     }
 
-    public function getLastInsertId() {
+    public function getLastInsertId()
+    {
         $this->checkDb();
         return $this->db->connect()
                         ->lastInsertId();

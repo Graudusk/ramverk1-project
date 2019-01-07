@@ -25,6 +25,11 @@ return [
             "title" => "Questions.",
         ],
         [
+            "text" => "Users",
+            "url" => "user",
+            "title" => "Users.",
+        ],
+        [
             "text" => "About",
             "url" => "about",
             "title" => "Om denna webbplats.",

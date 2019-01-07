@@ -22,14 +22,14 @@ $answerComments = isset($answerComments) ? $answerComments : null;
     <?= $avatar ?>
 </p>
 <h2>Questions</h2>
-<?php if ($questions): ?>
+<?php if ($questions) : ?>
     <?php foreach ($questions as $item) : ?>
         <article class="questionSummary">
             <h3><a href="<?= url("question/show/{$item->slug}"); ?>"><?= $item->title ?></a></h3>
             <p>Posted <small><?= $item->created ?></small> by <a href="<?= url("user/view/{$item->user}")?>"><strong><?= $item->name ?></strong></a></p>
-            <?php if ($item->tags): ?>
+            <?php if ($item->tags) : ?>
                 <div class="tags">
-                    <?php foreach ($item->tags as $tag): ?>
+                    <?php foreach ($item->tags as $tag) : ?>
                         <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag btn"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i></a>
                     <?php endforeach ?>
                 </div>
@@ -40,7 +40,7 @@ $answerComments = isset($answerComments) ? $answerComments : null;
 
 <h2>Comments</h2>
 <?php if ($questionComments) : ?>
-    <?php foreach ($questionComments as $comment): ?>
+    <?php foreach ($questionComments as $comment) : ?>
         <div class="comment">
             <div class="textBox">
                 <p>
@@ -55,7 +55,7 @@ $answerComments = isset($answerComments) ? $answerComments : null;
     <?php endforeach ?>
 <?php endif ?>
 <?php if ($answerComments) : ?>
-    <?php foreach ($answerComments as $comment): ?>
+    <?php foreach ($answerComments as $comment) : ?>
         <div class="comment">
             <div class="textBox">
                 <p>

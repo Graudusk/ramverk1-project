@@ -49,11 +49,11 @@ class User extends ActiveRecordModel
      *
      * @return boolean true if email and password matches, else false.
      */
-    public function verifyPassword($email, $password)
-    {
-        $this->find("email", $email);
-        return password_verify($password, $this->password);
-    }
+    // public function verifyPassword($email, $password)
+    // {
+    //     $this->find("email", $email);
+    //     return password_verify($password, $this->password);
+    // }
 
 
     /**
@@ -68,16 +68,13 @@ class User extends ActiveRecordModel
      * @return String containing either just a URL or a complete image tag
      * @source https://gravatar.com/site/implement/images/php/
      */
-    public function getGravatar($email, $img = false, $size = 80, $default = 'identicon', $rating = 'g', $atts = array())
+    public function getGravatar($email, $img = false, $size = 80, $default = 'identicon', $rating = 'g')
     {
         $url = 'https://www.gravatar.com/avatar/';
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$size&d=$default&r=$rating";
         if ($img) {
             $url = '<img src="' . $url . '"';
-            foreach ($atts as $key => $val) {
-                $url .= ' ' . $key . '="' . $val . '"';
-            }
             $url .= ' />';
         }
         return $url;
@@ -109,6 +106,4 @@ class User extends ActiveRecordModel
                         ->fetchAll();
                         // ->getSql();
     }
-
-
 }

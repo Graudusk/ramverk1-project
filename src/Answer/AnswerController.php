@@ -49,47 +49,47 @@ class AnswerController implements ContainerInjectableInterface
 
 
 
-    /**
-     * Show all items.
-     *
-     * @return object as a response object
-     */
-    public function indexActionGet(int $question) : object
-    {
-        $page = $this->di->get("page");
-        $answer = new Answer();
-        $answer->setDb($this->di->get("dbqb"));
+    // /**
+    //  * Show all items.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function indexActionGet(int $question) : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $answer = new Answer();
+    //     $answer->setDb($this->di->get("dbqb"));
 
-        $page->add("answer/crud/view-all", [
-            "items" => $answer->findAll(),
-        ]);
+    //     $page->add("answer/crud/view-all", [
+    //         "items" => $answer->findAll(),
+    //     ]);
 
-        return $page->render([
-            "title" => "A collection of items",
-        ]);
-    }
+    //     return $page->render([
+    //         "title" => "A collection of items",
+    //     ]);
+    // }
 
 
 
-    /**
-     * Handler with form to create a new item.
-     *
-     * @return object as a response object
-     */
-    public function createAction() : object
-    {
-        $page = $this->di->get("page");
-        $form = new CreateForm($this->di);
-        $form->check();
+    // /**
+    //  * Handler with form to create a new item.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function createAction() : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $form = new CreateForm($this->di);
+    //     $form->check();
 
-        $page->add("answer/crud/create", [
-            "form" => $form->getHTML(),
-        ]);
+    //     $page->add("answer/crud/create", [
+    //         "form" => $form->getHTML(),
+    //     ]);
 
-        return $page->render([
-            "title" => "Create a item",
-        ]);
-    }
+    //     return $page->render([
+    //         "title" => "Create a item",
+    //     ]);
+    // }
 
 
 
@@ -98,13 +98,24 @@ class AnswerController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction() : object
+    public function deleteAction($id) : object
     {
         $page = $this->di->get("page");
-        $form = new DeleteForm($this->di);
+        $form = new DeleteForm($this->di, $id);
         $form->check();
 
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answer->find("id", $id);
+
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $answer->question);
+
+
         $page->add("answer/crud/delete", [
+            "question" => $question,
+            "answer" => $answer,
             "form" => $form->getHTML(),
         ]);
 
@@ -128,7 +139,17 @@ class AnswerController implements ContainerInjectableInterface
         $form = new UpdateForm($this->di, $id);
         $form->check();
 
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answer->find("id", $id);
+
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $answer->question);
+
         $page->add("answer/crud/update", [
+            "question" => $question,
+            "answer" => $answer,
             "form" => $form->getHTML(),
         ]);
 
@@ -192,7 +213,7 @@ class AnswerController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Answer question",
         ]);
     }
 
@@ -213,15 +234,29 @@ class AnswerController implements ContainerInjectableInterface
 
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $answerId);
+        // $answer->find("id", $answerId);
+        $answer->findAnswer($answerId);
+        $answerHtml = MarkdownExtra::defaultTransform($answer->answer);
+
+
+        $comment = new Comment();
+        $comment->setDb($this->di->get("dbqb"));
+
+        $comments = $comment->findAllWhereJoin("Comment.*, User.name", "post = ? AND type = ?", [$answer->id, "answer"], "User", "User.id = user");
+
+        foreach ($comments as $comment) {
+            $comment->html = MarkdownExtra::defaultTransform($comment->text);
+        }
 
         $page->add("answer/crud/comment", [
             "answer" => $answer,
-            "form" => $form->getHTML()
+            "answerHtml" => $answerHtml,
+            "form" => $form->getHTML(),
+            "comments" => $comments
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Comment answer",
         ]);
     }
 }

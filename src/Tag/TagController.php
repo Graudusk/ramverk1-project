@@ -60,96 +60,96 @@ class TagController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Show all tags",
         ]);
     }
 
 
 
-    /**
-     * Handler with form to create a new item.
-     *
-     * @return object as a response object
-     */
-    public function createAction() : object
-    {
-        $page = $this->di->get("page");
-        $form = new CreateForm($this->di);
-        $form->check();
+    // /**
+    //  * Handler with form to create a new item.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function createAction() : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $form = new CreateForm($this->di);
+    //     $form->check();
 
-        $page->add("tag/crud/create", [
-            "form" => $form->getHTML(),
-        ]);
+    //     $page->add("tag/crud/create", [
+    //         "form" => $form->getHTML(),
+    //     ]);
 
-        return $page->render([
-            "title" => "Create a item",
-        ]);
-    }
-
-
-
-    /**
-     * Handler with form to delete an item.
-     *
-     * @return object as a response object
-     */
-    public function deleteAction() : object
-    {
-        $page = $this->di->get("page");
-        $form = new DeleteForm($this->di);
-        $form->check();
-
-        $page->add("tag/crud/delete", [
-            "form" => $form->getHTML(),
-        ]);
-
-        return $page->render([
-            "title" => "Delete an item",
-        ]);
-    }
+    //     return $page->render([
+    //         "title" => "Create a item",
+    //     ]);
+    // }
 
 
 
-    /**
-     * Handler with form to update an item.
-     *
-     * @param int $id the id to update.
-     *
-     * @return object as a response object
-     */
-    public function updateAction(int $id) : object
-    {
-        $page = $this->di->get("page");
-        $form = new UpdateForm($this->di, $id);
-        $form->check();
+    // /**
+    //  * Handler with form to delete an item.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function deleteAction() : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $form = new DeleteForm($this->di);
+    //     $form->check();
 
-        $page->add("tag/crud/update", [
-            "form" => $form->getHTML(),
-        ]);
+    //     $page->add("tag/crud/delete", [
+    //         "form" => $form->getHTML(),
+    //     ]);
 
-        return $page->render([
-            "title" => "Update an item",
-        ]);
-    }
+    //     return $page->render([
+    //         "title" => "Delete an item",
+    //     ]);
+    // }
 
 
-    /**
-     * Show all items.
-     *
-     * @return object as a response object
-     */
-    public function showActionGet($slug) : object
-    {
-        $page = $this->di->get("page");
-        $tag = new Tag();
-        $tag->setDb($this->di->get("dbqb"));
 
-        $page->add("tag/crud/show", [
-            "items" => $tag->find("slug", $slug),
-        ]);
+    // *
+    //  * Handler with form to update an item.
+    //  *
+    //  * @param int $id the id to update.
+    //  *
+    //  * @return object as a response object
+     
+    // public function updateAction(int $id) : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $form = new UpdateForm($this->di, $id);
+    //     $form->check();
 
-        return $page->render([
-            "title" => "A collection of items",
-        ]);
-    }
+    //     $page->add("tag/crud/update", [
+    //         "form" => $form->getHTML(),
+    //     ]);
+
+    //     return $page->render([
+    //         "title" => "Update an item",
+    //     ]);
+    // }
+
+
+    // /**
+    //  * Show all items.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function showActionGet($slug) : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $tag = new Tag();
+    //     $tag->setDb($this->di->get("dbqb"));
+
+    //     $page->add("tag/crud/show", [
+    //         "items" => $tag->find("slug", $slug),
+    //     ]);
+
+    //     return $page->render([
+    //         "title" => "A collection of items",
+    //     ]);
+    // }
 }

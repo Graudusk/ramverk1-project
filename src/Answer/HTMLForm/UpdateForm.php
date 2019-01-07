@@ -24,36 +24,32 @@ class UpdateForm extends FormModel
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Update details of the item",
+                "legend" => "Update answer text",
             ],
             [
                 "id" => [
-                    "type" => "text",
+                    "type" => "hidden",
                     "validation" => ["not_empty"],
                     "readonly" => true,
                     "value" => $answer->id,
                 ],
 
-                "column1" => [
-                    "type" => "text",
+                "question" => [
+                    "type" => "hidden",
+                    "value" => $answer->question,
                     "validation" => ["not_empty"],
-                    "value" => $answer->column1,
                 ],
 
-                "column2" => [
-                    "type" => "text",
+                "answer" => [
+                    "type" => "textarea",
+                    "value" => $answer->answer,
                     "validation" => ["not_empty"],
-                    "value" => $answer->column2,
                 ],
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Save",
+                    "value" => "Update answer",
                     "callback" => [$this, "callbackSubmit"]
-                ],
-
-                "reset" => [
-                    "type"      => "reset",
                 ],
             ]
         );
@@ -65,7 +61,7 @@ class UpdateForm extends FormModel
      * Get details on item to load form with.
      *
      * @param integer $id get details on item with id.
-     * 
+     *
      * @return Answer
      */
     public function getItemDetails($id) : object
@@ -89,8 +85,7 @@ class UpdateForm extends FormModel
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answer->find("id", $this->form->value("id"));
-        $answer->column1 = $this->form->value("column1");
-        $answer->column2 = $this->form->value("column2");
+        $answer->answer = $this->form->value("answer");
         $answer->save();
         return true;
     }

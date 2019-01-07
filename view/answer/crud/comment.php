@@ -1,8 +1,10 @@
 <?php
 
 namespace Anax\View;
+
 use Michelf\MarkdownExtra;
-$my_html = MarkdownExtra::defaultTransform($answer->answer);
+
+// $my_html = MarkdownExtra::defaultTransform($answer->answer);
 /**
  * View to display all books.
  */
@@ -15,36 +17,46 @@ $answer = isset($answer) ? $answer : null;
 $comments = isset($comments) ? $comments : null;
 
 // Create urls for navigation
-$urlToTags = url("question/");
-// var_dump($question);
+$urlToQuestions = url("question/");
+// var_dump($answer);
 
 
 ?><h1>Comment answer</h1>
 
 <p>
-    <a href="<?= $urlToTags ?>">Show all</a>
+    <a class="btn" href="<?= $urlToQuestions ?>"><i class="fas fa-angle-double-left fa-lg"></i>&nbsp;Show all questions</a>
 </p>
 
 <?php if (!$answer) : ?>
     <p>404 answer not found</p>
-<?php
+    <?php
     return;
 endif;
 $urlToAnswer = url("answer/{$answer->id}");
 
 ?>
 
-<!-- <h2><?= $answer->title ?></h2> -->
-<p><small><?= $answer->created ?></small></p>
-<p><?= $my_html ?></p>
-<!-- <p><?= $answer->tags ?></p> -->
+<div class="question">
+    <div class="header">
+    Posted <small><?= $answer->created ?></small> by <a href="<?= url("user/view/{$answer->user}")?>"><strong><?= $answer->name ?></strong></a>
+</div>
+<div class="textBox">
+    <?= $answerHtml ?>
+</div>
 
-<?= $form ?>
 
 <?php if ($comments) : ?>
-    <?php foreach ($comments as $comment): ?>
-        
+    <?php foreach ($comments as $comment) : ?>
+        <div class="comment">
+            <div class="textBox">
+                <p>
+                    Posted <small><?= $comment->created ?></small> by <a href="<?= url("user/view/{$comment->user}")?>"><strong><?= $comment->name ?></strong></a>
+                </p>
+                <?= $comment->html ?>
+            </div>
+        </div>
     <?php endforeach ?>
-<?php else: ?>
-    <p>No comments yet</p>
+<?php else : ?>
 <?php endif ?>
+
+<?= $form ?>

@@ -16,24 +16,40 @@ class DeleteForm extends FormModel
      *
      * @param Psr\Container\ContainerInterface $di a service container
      */
-    public function __construct(ContainerInterface $di)
+    public function __construct(ContainerInterface $di, $id)
     {
         parent::__construct($di);
+        $answer = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Delete an item",
+                "legend" => "Delete an answer",
             ],
             [
-                "select" => [
-                    "type"        => "select",
-                    "label"       => "Select item to delete:",
-                    "options"     => $this->getAllItems(),
+                "id" => [
+                    "type" => "hidden",
+                    "validation" => ["not_empty"],
+                    "readonly" => true,
+                    "value" => $answer->id,
+                ],
+
+                "question" => [
+                    "type" => "hidden",
+                    "value" => $answer->question,
+                    "validation" => ["not_empty"],
+                    "readonly" => true,
+                ],
+
+                "answer" => [
+                    "type" => "textarea",
+                    "value" => $answer->answer,
+                    "validation" => ["not_empty"],
+                    "readonly" => true,
                 ],
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Delete item",
+                    "value" => "Delete answer",
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]
@@ -43,21 +59,18 @@ class DeleteForm extends FormModel
 
 
     /**
-     * Get all items as array suitable for display in select option dropdown.
+     * Get details on item to load form with.
      *
-     * @return array with key value of all items.
+     * @param integer $id get details on item with id.
+     *
+     * @return Answer
      */
-    protected function getAllItems() : array
+    public function getItemDetails($id) : object
     {
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-
-        $answers = ["-1" => "Select an item..."];
-        foreach ($answer->findAll() as $obj) {
-            $answers[$obj->id] = "{$obj->column1} ({$obj->id})";
-        }
-
-        return $answers;
+        $answer->find("id", $id);
+        return $answer;
     }
 
 
@@ -72,7 +85,7 @@ class DeleteForm extends FormModel
     {
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $this->form->value("select"));
+        $answer->find("id", $this->form->value("id"));
         $answer->delete();
         return true;
     }
@@ -86,7 +99,7 @@ class DeleteForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("answer")->send();
+        $this->di->get("response")->redirect("question")->send();
     }
 
 

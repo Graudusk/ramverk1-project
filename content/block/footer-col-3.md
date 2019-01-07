@@ -1,3 +1,1 @@
-#### Footer col 3
-
-Med brödtext i ett stycke som säger något trevligt om just detta block, eller kanske en lista av länkar.
+[<i class="fab fa-github fa-2x"></i> GitHub](https://github.com/Graudusk/ramverk1-project)

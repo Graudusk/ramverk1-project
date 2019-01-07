@@ -73,7 +73,7 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Show all questions",
         ]);
     }
 
@@ -97,7 +97,7 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Create an item",
+            "title" => "Ask a question",
         ]);
     }
 
@@ -114,7 +114,12 @@ class QuestionController implements ContainerInjectableInterface
         $form = new DeleteForm($this->di, $id);
         $form->check();
 
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $id);
+
         $page->add("question/crud/delete", [
+            "question" => $question,
             "form" => $form->getHTML(),
         ]);
 
@@ -141,12 +146,18 @@ class QuestionController implements ContainerInjectableInterface
         $form = new UpdateForm($this->di, $id);
         $form->check();
 
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->findWhere('id = ?', $id);
+
+
         $page->add("question/crud/update", [
+            "question" => $question,
             "form" => $form->getHTML(),
         ]);
 
         return $page->render([
-            "title" => "Update an item",
+            "title" => "Update a question",
         ]);
     }
 
@@ -191,6 +202,9 @@ class QuestionController implements ContainerInjectableInterface
             $answerComment = new Comment();
             $answerComment->setDb($this->di->get("dbqb"));
 
+
+            $answers[$key]->isUser = $answers[$key]->user === $userId;
+
             $answers[$key]->comments = $answerComment->findAllComments([$value->id, "answer"]);
             foreach ($answers[$key]->comments as $comment) {
                 $comment->html = MarkdownExtra::defaultTransform($comment->text);
@@ -205,8 +219,10 @@ class QuestionController implements ContainerInjectableInterface
             "tags" => $tags
         ]);
 
+        $title = isset($question->title) ? $question->title : "Show question";
+
         return $page->render([
-            "title" => "A collection of items",
+            "title" => $title,
         ]);
     }
 
@@ -229,15 +245,17 @@ class QuestionController implements ContainerInjectableInterface
 
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $questionId);
+        $question->getQuestionObject("Question.id", $questionId);
+        $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         $page->add("question/crud/answer", [
             "question" => $question,
+            "questionHtml" => $questionHtml,
             "form" => $form->getHTML()
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Answer question",
         ]);
     }
 
@@ -256,17 +274,41 @@ class QuestionController implements ContainerInjectableInterface
         $form = new CommentForm($this->di, $questionId, "question");
         $form->check();
 
+        $tag = new Tag();
+        $tag->setDb($this->di->get("dbqb"));
+        $tags = $tag->findAllWhere("question = ?", $questionId);
+
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $questionId);
+        // $question->find("id", $questionId);
+        $question->getQuestionObject("Question.id", $questionId);
+        $questionHtml = MarkdownExtra::defaultTransform($question->question);
+
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answers = $answer->findAllAnswers($question->id);
+
+        foreach ((array)$answers as $key => $value) {
+            $value->html = MarkdownExtra::defaultTransform($value->answer);
+            $answerComment = new Comment();
+            $answerComment->setDb($this->di->get("dbqb"));
+
+            $answers[$key]->comments = $answerComment->findAllComments([$value->id, "answer"]);
+            foreach ($answers[$key]->comments as $comment) {
+                $comment->html = MarkdownExtra::defaultTransform($comment->text);
+            }
+        }
 
         $page->add("question/crud/comment", [
             "question" => $question,
-            "form" => $form->getHTML()
+            "answers" => $answers,
+            "tags" => $tags,
+            "form" => $form->getHTML(),
+            "questionHtml" => $questionHtml
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Comment question",
         ]);
     }
 
@@ -297,7 +339,7 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Show questions with tag",
         ]);
     }
 }

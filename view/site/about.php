@@ -10,17 +10,12 @@ namespace Anax\View;
 //echo showEnvironment(get_defined_vars());
 
 // Gather incoming variables and use default values if not set
-$items = isset($items) ? $items : null;
-
+// var_dump($popularTags);
 // Create urls for navigation
-$urlToProfile = url("user/profile");
+// $urlToCreate = url("question/create");
+// $urlToDelete = url("question/delete");
 
-// var_dump($user);
+?>
+<h1>About</h1>
 
-?><h1>User</h1>
-
-<p>
-    <a href="<?= $urlToProfile ?>">Back to profile</a>
-</p>
-
-<?= $form ?>
+<a href="https://github.com/Graudusk/ramverk1-project">Project on GitHub <i class="fab fa-github fa-2x"></i></a>

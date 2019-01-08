@@ -28,8 +28,6 @@ services:
 
 before_install:
 - mysql -u root --password="" < test/travisconfig.sql
-- mysql -u user --password="pass" < sql/ddl/ddl.sql
-- mysql -u user --password="pass" < sql/ddl/insert.sql
 
 # notifications:
 #     irc: "irc.freenode.org#dbwebb"

@@ -45,13 +45,12 @@ class Navbar
     }
 
 
-
     /**
-     * Create an url.
+     * Check if the route is parent
      *
-     * @param: string $url where to create the url.
+     * @param  string  $parent [description]
      *
-     * @return string as the url create.
+     * @return boolean         [description]
      */
     public function isParent($parent)
     {
@@ -113,7 +112,7 @@ class Navbar
 
                 // Check if the current menuitem is selected
                 if (!isset($item["url"])) {
-                    var_dump($item);
+                    // var_dump($item);
                 }
                 $selected = $this->check($item["url"])
                     ? "selected "

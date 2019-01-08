@@ -3,8 +3,8 @@ jobs:
     build:
         docker:
             # specify the version you desire here
-            - image: circleci/php:7.2-browsers
-            # - image: anax/dev
+            #- image: circleci/php:7.2-browsers
+            - image: anax/dev
 
             # Specify service dependencies here if necessary
             # CircleCI maintains a library of pre-built images
@@ -25,10 +25,10 @@ jobs:
                     - v1-dependencies-
 
             # - run: composer install -n --prefer-dist
-            - run: sudo apt-get update && sudo apt-get install -y mysql-client
+            # - run: sudo apt-get update && sudo apt-get install -y mysql-client
             # - run: mysql  -h 127.0.0.1 -u root -e "create database travel;"
             - run: make install
-            - run: ./install.bash
+            # - run: ./install.bash
 
             - save_cache:
                 paths:

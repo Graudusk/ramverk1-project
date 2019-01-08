@@ -1,5 +1,6 @@
 # Travelers' information
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Graudusk/ramverk1-project/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Graudusk/ramverk1-project/?branch=master)
+[![Build Status](https://travis-ci.org/Graudusk/ramverk1-project.svg?branch=master)](https://travis-ci.org/Graudusk/ramverk1-project)
 
 Install website
 ------------------------------------

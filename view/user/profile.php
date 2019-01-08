@@ -14,6 +14,7 @@ $questions = isset($questions) ? $questions : null;
 $answers = isset($answers) ? $answers : null;
 $questionComments = isset($questionComments) ? $questionComments : null;
 $answerComments = isset($answerComments) ? $answerComments : null;
+$isUser = isset($isUser) ? $isUser : null;
 
 // Create urls for navigation
 $urlToEdit = url("user/edit");
@@ -26,7 +27,7 @@ $urlToCreateQuestion = url("question/create");
 <p>
     <?= $avatar ?>
 </p>
-<?php if ($user->isUser) : ?>
+<?php if ($isUser) : ?>
     <p>
         <a class="btn blue" href="<?= $urlToEdit ?>"><i class="fas fa-user-edit fa-lg"></i>&nbsp;Edit profile</a>
         <a class="btn" href="<?= $urlToCreateQuestion ?>"><i class="fas fa-question fa-lg"></i>&nbsp;Ask question</a>

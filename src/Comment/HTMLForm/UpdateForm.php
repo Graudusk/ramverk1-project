@@ -34,16 +34,16 @@ class UpdateForm extends FormModel
                     "value" => $comment->id,
                 ],
 
+                "text" => [
+                    "type" => "textarea",
+                    "value" => $comment->text,
+                    "validation" => ["not_empty"],
+                ],
+
                 "column1" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
                     "value" => $comment->column1,
-                ],
-
-                "column2" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "value" => $comment->column2,
                 ],
 
                 "submit" => [
@@ -89,8 +89,7 @@ class UpdateForm extends FormModel
         $comment = new Comment();
         $comment->setDb($this->di->get("dbqb"));
         $comment->find("id", $this->form->value("id"));
-        $comment->column1 = $this->form->value("column1");
-        $comment->column2 = $this->form->value("column2");
+        $comment->text = $this->form->value("text");
         $comment->save();
         return true;
     }

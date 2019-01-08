@@ -16,12 +16,12 @@ use Psr\Container\ContainerInterface;
 class UserSecurity
 {
     // use ContainerInjectableTrait;
-
+    protected $di;
 
     /**
      * Constructor injects with DI container.
      *
-     * @param Psr\Container\ContainerInterface $di a service container
+     * @param \Psr\Container\ContainerInterface $di a service container
      */
     public function __construct(ContainerInterface $di)
     {
@@ -41,7 +41,7 @@ class UserSecurity
      *
      * @param number $level the user level to check for.
      *
-     * @return true | redirect to start page
+     * @return true
      */
     public function auth()
     {

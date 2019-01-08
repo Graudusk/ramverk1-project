@@ -47,15 +47,9 @@ class UserController implements ContainerInjectableInterface
     // }
 
 
-
     /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
-     *
-     * @return object as a response object
+     * [indexActionGet description]
+     * @return [type] [description]
      */
     public function indexActionGet() : object
     {
@@ -107,11 +101,7 @@ class UserController implements ContainerInjectableInterface
 
 
     /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
+     * Handler with form to create a new item.
      *
      * @return object as a response object
      */
@@ -203,7 +193,7 @@ class UserController implements ContainerInjectableInterface
         $user->setDb($this->di->get("dbqb"));
         $user->find("id", $id);
         $userId = $this->di->session->get('login')['id'];
-        $user->isUser = $user->id === $userId;
+        $isUser = $user->id === $userId;
 
 
         //hämta frågor
@@ -234,6 +224,7 @@ class UserController implements ContainerInjectableInterface
 
         $page->add("user/profile", [
             "user" => $user,
+            "isUser" => $isUser,
             "avatar" => $user->getGravatar($user->email, true, 200),
             "questions" => $questions,
             "questionComments" => $questionComments,

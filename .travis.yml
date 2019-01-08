@@ -21,6 +21,16 @@ before_script:
 script:
     - make test
 
+
+services:
+  - mysql
+
+
+before_install:
+- mysql -u root --password="" < test/travis.sql
+- mysql -u user --password="pass" < sql/ddl/ddl.sql
+- mysql -u user --password="pass" < sql/ddl/insert.sql
+
 # notifications:
 #     irc: "irc.freenode.org#dbwebb"
 #     urls:

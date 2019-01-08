@@ -1,10 +1,11 @@
 SET NAMES utf8;
-USE `travel`;
 
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
 # Create DB
 CREATE DATABASE IF NOT EXISTS `travel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 # Create Testuser
+USE `travel`;
+
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
 -- GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'user'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';

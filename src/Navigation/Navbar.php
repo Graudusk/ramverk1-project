@@ -122,14 +122,6 @@ class Navbar
                     ? "selected "
                     : null;
 
-                // Check if the menuitem is a parent of current page, /controller for /controller/action
-                $isParent = null;
-                if (isset($item["mark-if-parent"]) && $item["mark-if-parent"] == true) {
-                    $isParent = $this->isParent($item["url"])
-                        ? "selected-parent "
-                        : null;
-                }
-
                 // Is there a class set for this item, then use it
                 $class = isset($item["class"]) && ! is_null($item["class"])
                     ? $item["class"]

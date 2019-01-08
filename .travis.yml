@@ -27,20 +27,20 @@ services:
 
 
 before_install:
-- sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
-- sudo mysql_upgrade -u root -pnew_password
-- sudo service mysql restart
+# - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+# - sudo mysql_upgrade -u root -pnew_password
+# - sudo service mysql restart
 - mysql -uroot --password="" < test/travisconfig.sql
 - mysql -uuser -ppass < sql/ddl/ddl.sql
 - mysql -uuser -ppass < sql/ddl/insert.sql
 
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
-      - mysql-client
+# addons:
+#   apt:
+#     sources:
+#       - mysql-5.7-trusty
+#     packages:
+#       - mysql-server
+#       - mysql-client
 # notifications:
 #     irc: "irc.freenode.org#dbwebb"
 #     urls:

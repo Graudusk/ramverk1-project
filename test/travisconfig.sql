@@ -1,5 +1,5 @@
 SET NAMES utf8;
-
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost'
 # Create DB
 CREATE DATABASE IF NOT EXISTS `travel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `travel`;

@@ -21,7 +21,9 @@ SET NAMES utf8;
 -- --
 -- -- Create a database user for the test database
 -- --
-GRANT ALL ON travel.* TO user@localhost IDENTIFIED BY 'pass';
+-- GRANT ALL ON travel.* TO user@localhost IDENTIFIED BY 'pass';
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'user'@'localhost';
 
 -- -- Ensure UTF8 on the database connection
 -- SET NAMES utf8;

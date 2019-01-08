@@ -115,10 +115,6 @@ class UserControllerTest extends TestCase
     {
         $res = $this->controller->ProfileAction(1);
         $this->assertInstanceOf("\Anax\Response\Response", $res);
-
-        $body = $res->getBody();
-        $exp = "<title>User profile page | Travelers' i</title>";
-        $this->assertContains($exp, $body);
     }
 
 

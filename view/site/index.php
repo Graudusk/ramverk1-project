@@ -18,12 +18,22 @@ $users = isset($users) ? $users : null;
 // $urlToCreate = url("question/create");
 // $urlToDelete = url("question/delete");
 
+$urlToCreate = url("question/create");
+$urlToViewQuestions = url("question");
+$urlToViewUsers = url("user");
+$urlToViewTags = url("tag");
 
 
 ?>
+<h2 class="text-center">Welcome!</h2>
+<p class="lead text-center">Get your answers about everything travel-related!</p>
 
 <?php if ($questions) : ?>
-    <h1>Latest questions</h1>
+    <h2>Latest questions</h2>
+    <p>
+        <a class="btn blue" href="<?= $urlToCreate ?>"><i class="fas fa-question fa-lg"></i>&nbsp;Ask question</a>
+        <a class="btn" href="<?= $urlToViewQuestions ?>">View all questions</a>
+    </p>
     <?php foreach ($questions as $item) : ?>
     <article class="questionSummary">
         <h4><a href="<?= url("question/show/{$item->slug}"); ?>"><?= $item->title ?></a></h4>
@@ -53,7 +63,10 @@ $users = isset($users) ? $users : null;
 <?php if (!$popularTags) : ?>
     <p>There are no tags to show.</p>
 <?php else : ?>
-    <h1>Most popular tags</h1>
+    <h2>Most popular tags</h2>
+    <p>
+        <a class="btn" href="<?= $urlToViewTags ?>"><i class="fas fa-tags fa-lg"></i>&nbsp;View all tags</a>
+    </p>
     <?php foreach ($popularTags as $tag) : ?>
         <?php if ($tag) : ?>
             <a href="<?= url("question/tag/{$tag->slug}")?>" class="tag btn"><?=$tag->tag?>&nbsp;<i class="fas fa-tag"></i>&nbsp;(<?=$tag->count?>)</a>
@@ -64,7 +77,10 @@ $users = isset($users) ? $users : null;
 <?php if (!$users) : ?>
     <p>There are no users to show.</p>
 <?php else : ?>
-    <h1>Most active users</h1>
+    <h2>Most active users</h2>
+    <p>
+        <a class="btn" href="<?= $urlToViewUsers ?>"><i class="fas fa-users fa-lg"></i>&nbsp;View all users</a>
+    </p>
     <?php foreach ($users as $user) : ?>
         <?php if ($user) : ?>
         <article class="questionSummary">

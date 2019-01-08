@@ -60,7 +60,7 @@
 //         // $res = $this->controller->indexAction();
 
 //         $body = $res->getBody();
-//         $exp = "<title>Answer question | Travellers</title>";
+//         $exp = "<title>Answer question | Travelers' i</title>";
 //         $this->assertContains($exp, $body);
 //     }
 

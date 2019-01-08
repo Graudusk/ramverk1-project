@@ -20,7 +20,7 @@ $urlToProfile = url("user/profile");
 ?><h1>User</h1>
 
 <p>
-    <a href="<?= $urlToProfile ?>">Back to profile</a>
+    <a class="btn" href="<?= $urlToProfile ?>"><i class="fas fa-user fa-lg"></i>&nbsp;Back to profile</a>
 </p>
 
 <?= $form ?>

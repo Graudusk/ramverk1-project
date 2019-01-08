@@ -63,7 +63,7 @@ class TagControllerTest extends TestCase
         // $res = $this->controller->indexAction();
 
         $body = $res->getBody();
-        $exp = "<title>Show all tags | Travellers</title>";
+        $exp = "<title>Show all tags | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 }

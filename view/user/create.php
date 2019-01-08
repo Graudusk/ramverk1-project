@@ -20,7 +20,7 @@ $urlToLogin = url("user/login");
 ?><h1>Create user</h1>
 
 <p>
-    <a href="<?= $urlToLogin ?>">Login</a>
+    <a class="btn" href="<?= $urlToLogin ?>"><i class="fas fa-key fa-lg"></i>&nbsp;Login</a>
 </p>
 
 <?= $form ?>

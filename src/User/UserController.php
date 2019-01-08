@@ -10,6 +10,7 @@ use Erjh17\User\HTMLForm\EditUserForm;
 use Erjh17\User\UserSecurity;
 use Erjh17\Question\Question;
 use Erjh17\Comment\Comment;
+use Erjh17\Answer\Answer;
 use Erjh17\Tag\Tag;
 use Michelf\MarkdownExtra;
 
@@ -142,57 +143,12 @@ class UserController implements ContainerInjectableInterface
      */
     public function profileAction() : object
     {
+
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
-        // $user = new User();
         $userId = $this->di->session->get('login')['id'];
-
-
-        $page = $this->di->get("page");
-
-        $user = new User();
-        $user->setDb($this->di->get("dbqb"));
-        $user->find("id", $userId);
-
-        //hämta frågor
-        $question = new Question();
-        $question->setDb($this->di->get("dbqb"));
-
-        $questions = $question->getUserQuestions($userId);
-
-        foreach ((array)$questions as $item) {
-            $tag = new Tag();
-            $tag->setDb($this->di->get("dbqb"));
-            $tags = $tag->findAllWhere("question = ?", $item->id);
-            $item->tags = $tags;
-        }
-
-        //hämta kommentarer
-        $comment = new Comment();
-        $comment->setDb($this->di->get("dbqb"));
-        $questionComments = $comment->getUserQuestionComments($userId);
-        $answerComments = $comment->getUserAnswerComments($userId);
-
-        foreach ($questionComments as $comment) {
-            $comment->html = MarkdownExtra::defaultTransform($comment->text);
-        }
-        foreach ($answerComments as $comment) {
-            $comment->html = MarkdownExtra::defaultTransform($comment->text);
-        }
-
-        $page->add("user/profile", [
-            "user" => $user,
-            "avatar" => $user->getGravatar($user->email, true, 200),
-            "questions" => $questions,
-            "questionComments" => $questionComments,
-            "answerComments" => $answerComments
-        ]);
-
-
-        return $page->render([
-            "title" => "User profile page",
-        ]);
+        return $this->di->get('response')->redirect("user/view/$userId");
     }
 
 
@@ -246,6 +202,9 @@ class UserController implements ContainerInjectableInterface
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
         $user->find("id", $id);
+        $userId = $this->di->session->get('login')['id'];
+        $user->isUser = $user->id === $userId;
+
 
         //hämta frågor
         $question = new Question();
@@ -273,7 +232,7 @@ class UserController implements ContainerInjectableInterface
             $comment->html = MarkdownExtra::defaultTransform($comment->text);
         }
 
-        $page->add("user/view", [
+        $page->add("user/profile", [
             "user" => $user,
             "avatar" => $user->getGravatar($user->email, true, 200),
             "questions" => $questions,

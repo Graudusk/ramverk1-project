@@ -10,7 +10,7 @@ return [
     // Here comes the menu items
     "items" => [
         [
-            "text" => "Home",
+            "text" => "Travelers' <i class='fas fa-info-circle fa-fw' ></i>",
             "url" => "",
             "title" => "Första sidan, börja här.",
         ],

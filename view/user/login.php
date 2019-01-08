@@ -18,9 +18,8 @@ $urlToCreate = url("user/create");
 
 
 ?><h1>Login</h1>
-
 <p>
-    <a href="<?= $urlToCreate ?>">Create new user</a>
+    <a class="btn" href="<?= $urlToCreate ?>"><i class="fas fa-user fa-lg"></i>&nbsp;Register new account</a>
 </p>
 
 <?= $form ?>

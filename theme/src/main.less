@@ -229,7 +229,16 @@ html.hgrid .inner-wrap {
 .rm-desktop li ul {
     background-color: #424242;
 }
-
+.my-navbar li:first-child a {
+    margin: 0;
+    color: #3a44a1;
+    font-family: Titillium web;
+    font-weight: bold;
+    transition: all ease-in .2s;
+    &:hover {
+        color: #acb2e7 !important;
+    }
+}
 .rm-desktop li a {
     margin-top: 10px;
 
@@ -256,7 +265,7 @@ html.hgrid .inner-wrap {
  * Egna ändringar för typsnitt
  */
 
-@import url('https://fonts.googleapis.com/css?family=Sanchez|Titillium+Web|Roboto|Ubuntu');
+@import url('https://fonts.googleapis.com/css?family=Sanchez|Titillium+Web|Roboto|Ubuntu|Anonymous+Pro');
 @header-font: 'Ubuntu', sans-serif;
 @font-logo: 'Ubuntu', serif;
 @font-body: 'Sanchez', serif;
@@ -374,6 +383,39 @@ select {
     margin: 0;
 }
 
+.outer-wrap-flash {
+    .inner-wrap.inner-wrap-flash {
+        max-width: 100%;
+        .row {
+            width: 100%;
+            margin: 0;
+            .region-flash {
+                width: 100%;
+                margin: 0;
+                float: none;
+
+                .flash {
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    height: 400px;
+
+                    h1 {
+                        font-family: Titillium web;
+                        font-weight: bold;
+                        font-size: 78px;
+                        margin: 0;
+                        padding-top: 220px;
+                        text-align: center;
+                        color: #fff;
+                        text-shadow: #0000004d 3px 2px 1px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .inner-wrap {
     max-width: 960px;
 }
@@ -455,7 +497,7 @@ a, a:hover, a:visited, a:focus {
     color: #3a44a1;
 }
 
-.btn, input[type="text"], input[type="submit"], input[type="reset"], input[type="number"], select, button, textarea {
+.btn, input[type="text"], input[type="submit"], input[type="email"], input[type="password"], input[type="reset"], input[type="number"], select, button, textarea {
     // color: #222;
     background-color: #fff;
     padding: 6px 12px;
@@ -502,6 +544,11 @@ textarea[readonly="readonly"], input[readonly="readonly"] {
     p {
         margin-top: 12px;
         margin-bottom: 12px;
+    }
+    .textBox {
+        padding: 24px 12px;
+        background: #f6f6f6;
+        margin: 0;
     }
 }
 
@@ -554,3 +601,18 @@ h1, h2, h3 {
         }
     }
 }
+
+p.lead {
+    font-size: 120%;
+}
+
+.footer-column-wrapper a {
+    color: #a7a9c0!important;
+    &:hover {
+        color: #8c8fb6!important;
+    }
+}
+
+#form-element-submit::before {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f084";
+  }

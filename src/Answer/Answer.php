@@ -75,4 +75,20 @@ class Answer extends ActiveRecordModel
                         ->execute($params)
                         ->fetchInto($this);
     }
+
+    public function getUserAnswers($user)
+    {
+        $this->checkDb();
+        $params = [$user];
+        return $this->db->connect()
+                        ->select("Answer.*, User.name, Question.*")
+                        ->from($this->tableName)
+                        ->where("Answer.user = ?")
+                        ->join("User", "User.id = Answer.user")
+                        // ->join("Answer", "Answer.id = Answer.post AND Answer.type = 'answer'")
+                        ->join("Question", "Question.id = Answer.question")
+                        ->orderBy("Answer.updated, Answer.created DESC")
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
 }

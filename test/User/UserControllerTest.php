@@ -57,7 +57,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Show all users | Travellers</title>";
+        $exp = "<title>Show all users | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -72,7 +72,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>User profile page | Travellers</title>";
+        $exp = "<title>User profile page | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -87,7 +87,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Register user | Travellers</title>";
+        $exp = "<title>Register user | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Login on site | Travellers</title>";
+        $exp = "<title>Login on site | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -117,7 +117,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>User profile page | Travellers</title>";
+        $exp = "<title>User profile page | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -132,7 +132,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Update user | Travellers</title>";
+        $exp = "<title>Update user | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -147,7 +147,7 @@ class UserControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         // $body = $res->getBody();
-        // $exp = "<title>Update user | Travellers</title>";
+        // $exp = "<title>Update user | Travelers' i</title>";
         // $this->assertContains($exp, $body);
     }
 

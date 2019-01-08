@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-file="sql/ddl/setup.sql"
+file="sql/setup.sql"
 mysql -uroot -p < $file
 
 file="sql/ddl/ddl.sql"

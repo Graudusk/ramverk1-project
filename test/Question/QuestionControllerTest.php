@@ -57,7 +57,7 @@ class QuestionControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Show all questions | Travellers</title>";
+        $exp = "<title>Show all questions | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -72,7 +72,7 @@ class QuestionControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Ask a question | Travellers</title>";
+        $exp = "<title>Ask a question | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -102,7 +102,7 @@ class QuestionControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Answer question | Travellers</title>";
+        $exp = "<title>Answer question | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -144,7 +144,7 @@ class QuestionControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Show questions with tag | Travellers</title>";
+        $exp = "<title>Show questions with tag | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 
@@ -158,7 +158,7 @@ class QuestionControllerTest extends TestCase
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
-        $exp = "<title>Comment question | Travellers</title>";
+        $exp = "<title>Comment question | Travelers' i</title>";
         $this->assertContains($exp, $body);
     }
 }

@@ -51,6 +51,7 @@ class SiteController implements ContainerInjectableInterface
     public function indexAction() : object
     {
         $page = $this->di->get("page");
+
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $questions = $question->getQuestions(4);
@@ -82,6 +83,11 @@ class SiteController implements ContainerInjectableInterface
             "users" => $users
         ]);
 
+        $page->add("site/flash", [
+            "src" => "img/departures.png",
+            "text" => "Travelers' <i class='fas fa-info-circle'></i>",
+        ], "flash");
+
         return $page->render([
             "title" => "Home",
         ]);
@@ -98,10 +104,26 @@ class SiteController implements ContainerInjectableInterface
     {
         $page = $this->di->get("page");
 
-        $page->add("site/about");
+        $user = new User();
+        $smith = $user->getGravatar("smith@travelers.com", true, 100);
+        $locke = $user->getGravatar("locke@travelers.com", true, 100);
+        $homer = $user->getGravatar("homer@travelers.com", true, 100);
+        $johansson = $user->getGravatar("johansson@travelers.com", true, 100);
+
+        $page->add("site/flash", [
+            "src" => "img/airplane.jpg",
+            "text" => "About us",
+        ], "flash");
+
+        $page->add("site/about", [
+            "smith" => $smith,
+            "locke" => $locke,
+            "homer" => $homer,
+            "johansson" => $johansson
+        ]);
 
         return $page->render([
-            "title" => "About",
+            "title" => "About"
         ]);
     }
 

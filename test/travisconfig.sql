@@ -6,7 +6,8 @@ USE `travel`;
 
 # Create Testuser
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'user'@'localhost';
+-- GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'user'@'localhost';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
 --
 -- Table User
 --

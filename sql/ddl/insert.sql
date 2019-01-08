@@ -1,3 +1,4 @@
+USE `travel`;
 
 
 INSERT INTO `User`

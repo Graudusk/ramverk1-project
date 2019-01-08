@@ -17,6 +17,7 @@
 
 -- -- Ensure UTF8 on the database connection
 -- SET NAMES utf8;
+USE `travel`;
 
 --
 -- Table User

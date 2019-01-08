@@ -4,10 +4,6 @@ namespace Erjh17\Tag;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
-use Erjh17\Tag\HTMLForm\CreateForm;
-use Erjh17\Tag\HTMLForm\EditForm;
-use Erjh17\Tag\HTMLForm\DeleteForm;
-use Erjh17\Tag\HTMLForm\UpdateForm;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;

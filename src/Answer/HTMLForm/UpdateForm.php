@@ -14,7 +14,7 @@ class UpdateForm extends FormModel
     /**
      * Constructor injects with DI container and the id to update.
      *
-     * @param Psr\Container\ContainerInterface $di a service container
+     * @param \Psr\Container\ContainerInterface $di a service container
      * @param integer             $id to update
      */
     public function __construct(ContainerInterface $di, $id)

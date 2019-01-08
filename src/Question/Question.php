@@ -26,6 +26,7 @@ class Question extends ActiveRecordModel
     public $question;
     public $user;
     public $created;
+    public $updated;
     public $slug;
 
     /**

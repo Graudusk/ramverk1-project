@@ -14,7 +14,7 @@ class EditUserForm extends FormModel
     /**
      * Constructor injects with DI container.
      *
-     * @param Psr\Container\ContainerInterface $di a service container
+     * @param \Psr\Container\ContainerInterface $di a service container
      */
     public function __construct(ContainerInterface $di, $id)
     {
@@ -60,7 +60,7 @@ class EditUserForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return Book
+     * @return User
      */
     public function getUser($id) : object
     {

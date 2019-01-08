@@ -16,6 +16,7 @@ $question = isset($question) ? $question : null;
 $comments = isset($comments) ? $comments : null;
 $answers = isset($answers) ? $answers : null;
 $questionHtml = isset($questionHtml) ? $questionHtml : null;
+$isUser = isset($isUser) ? $isUser : null;
 
 // Create urls for navigation
 $urlToQuestions = url("question/");
@@ -41,7 +42,7 @@ $urlToDelete = url("question/delete/{$question->id}");
 
 <div class="question">
     <div class="header">
-<?php if ($question->isUser) : ?>
+<?php if ($isUser) : ?>
     <div class="tools">
         <a href="<?= $urlToUpdate?>" class="btn">Update <i class="fas fa-edit fa-lg fa-flip-horizontal"></i></a>
         <a href="<?= $urlToDelete?>" class="btn">Delete <i class="fas fa-times fa-lg fa-flip-horizontal"></i></a>

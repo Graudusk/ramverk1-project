@@ -102,7 +102,7 @@ class AnswerForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return Book
+     * @return integer user id
      */
     public function getUserId()
     {

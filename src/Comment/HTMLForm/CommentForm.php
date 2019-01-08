@@ -16,7 +16,7 @@ class CommentForm extends FormModel
     /**
      * Constructor injects with DI container.
      *
-     * @param Psr\Container\ContainerInterface $di a service container
+     * @param \Psr\Container\ContainerInterface $di a service container
      */
     public function __construct(ContainerInterface $di, $question, $type)
     {
@@ -78,7 +78,7 @@ class CommentForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return Question
+     * @return Answer
      */
     public function getAnswerDetails($id) : object
     {
@@ -128,7 +128,7 @@ class CommentForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return Book
+     * @return integer
      */
     public function getUserId()
     {

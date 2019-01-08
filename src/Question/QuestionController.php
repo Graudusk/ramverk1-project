@@ -182,7 +182,7 @@ class QuestionController implements ContainerInjectableInterface
         // var_dump($tags);
         
         $userId = $this->di->session->get('login')['id'];
-        $question->isUser = $question->user === $userId;
+        $isUser = $question->user === $userId;
 
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
@@ -212,6 +212,7 @@ class QuestionController implements ContainerInjectableInterface
         }
 
         $page->add("question/crud/show", [
+            "isUser" => $isUser,
             "question" => $question,
             "comments" => $questionComments,
             "answers" => $answers,

@@ -58,6 +58,25 @@ class Navbar
         return !substr_compare($parent, $route, 0, strlen($parent));
     }
 
+    /**
+     * returns either the login button or logout button
+     * together with profile link
+     *
+     * @return string the generated html
+     */
+    public function getLoginButton()
+    {
+        if ($this->di->session->get("login")) {
+            $user = new \Erjh17\User\User();
+            $logoutUrl = $this->url('user/logout');
+            $profileUrl = $this->url('user/profile');
+            return "<li><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($this->di->session->get('login')['email'], true, 20)}  {$this->di->session->get('login')['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
+        } else {
+            $loginUrl = $this->url('user/login');
+            return "\n<li><a href='{$loginUrl}'>Login</a></li>\n";
+        }
+    }
+
 
 
     /**
@@ -95,21 +114,6 @@ class Navbar
             $hasItemIsSelected = false;
 
             foreach ($items as $item) {
-                // has submenu, call recursivly and keep track on if the submenu has a selected item in it.
-                $subMenu        = null;
-                $subMenuButton  = null;
-                $subMenuClass   = null;
-                $selectedParent = null;
-
-                if (isset($item["submenu"])) {
-                    list($subMenu, $selectedParent) = $createMenu($item["submenu"]["items"]);
-                    $selectedParent = $selectedParent
-                        ? "selected-parent "
-                        : null;
-                    $subMenuButton = "<a class=\"rm-submenu-button\" href=\"#\"></a>";
-                    $subMenuClass = "rm-submenu";
-                }
-
                 // Check if the current menuitem is selected
                 if (!isset($item["url"])) {
                     // var_dump($item);
@@ -132,35 +136,27 @@ class Navbar
                     : null;
 
                 // Prepare the class-attribute, if used
-                $class = ($selected || $selectedParent || $isParent || $class)
-                    ? " class=\"{$selected}{$selectedParent}{$isParent}{$class}{$subMenuClass}\" "
+                $class = ($selected || $class)
+                    ? " class=\"{$selected}{$class}\" "
                     : null;
 
                 // Add the menu item
                 // $url = $menu["create_url"]($item["url"]);
                 $url = $this->url($item["url"]);
-                $html .= "\n<li{$class}>{$subMenuButton}<a href='{$url}' title='{$item['title']}'>{$item['text']}</a>{$subMenu}</li>\n";
+                $html .= "\n<li{$class}><a href='{$url}' title='{$item['title']}'>{$item['text']}</a></li>\n";
 
                 // To remember there is selected children when going up the menu hierarchy
                 if ($selected) {
                     $hasItemIsSelected = true;
                 }
             }
-            if ($this->di->session->get("login")) {
-                $user = new \Erjh17\User\User();
-                $logoutUrl = $this->url('user/logout');
-                $profileUrl = $this->url('user/profile');
-                $html .= "<li><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($this->di->session->get('login')['email'], true, 20)}  {$this->di->session->get('login')['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
-            } else {
-                $loginUrl = $this->url('user/login');
-                $html .= "\n<li><a href='{$loginUrl}'>Login</a></li>\n";
-            }
+            $html .= $this->getLoginButton();
 
             // Return the menu
             return array("\n<ul$ulId$ulClass>$html</ul>\n", $hasItemIsSelected);
         };
 
-        // Call the anonomous function to create the menu, and submenues if any.
+        // Call the anonomous function to create the menu
         $id = isset($menu["id"])
             ? " id=\"{$menu["id"]}\""
             : null;

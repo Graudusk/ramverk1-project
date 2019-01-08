@@ -31,6 +31,8 @@ before_install:
 - sudo mysql_upgrade -u root -pnew_password
 - sudo service mysql restart
 - mysql -uroot --password="" < test/travisconfig.sql
+- mysql -uuser -ppass < sql/ddl/ddl.sql
+- mysql -uuser -ppass < sql/ddl/insert.sql
 
 addons:
   apt:

@@ -5,17 +5,6 @@ jobs:
             # specify the version you desire here
             #- image: circleci/php:7.1.5-browsers
             - image: anax/dev
-            environment:
-                MYSQL_HOST: 127.0.0.1
-                MYSQL_DB: travel
-                MYSQL_USER: root
-                MYSQL_ALLOW_EMPTY_PASSWORD: true
-                MYSQL_PASSWORD:
-          - image: mysql:5.7
-            command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
-            environment:
-                MYSQL_USER: root
-                MYSQL_ALLOW_EMPTY_PASSWORD: true
 
             # Specify service dependencies here if necessary
             # CircleCI maintains a library of pre-built images
@@ -37,9 +26,7 @@ jobs:
 
             #- run: composer install -n --prefer-dist
             - run: sudo apt install -y mysql-client
-            - run:
-                name: Mysql database
-                command: mysql  -h 127.0.0.1 -u root -e "create database travel;"
+            - run: mysql  -h 127.0.0.1 -u root -e "create database travel;"
             - run: make install
             - run: ./install.bash
 

@@ -25,6 +25,7 @@ jobs:
                     - v1-dependencies-
 
             # - run: composer install -n --prefer-dist
+            - run: apt-get install -y sudo
             - run: sudo apt install -y mysql-client
             # - run: mysql  -h 127.0.0.1 -u root -e "create database travel;"
             - run: make install

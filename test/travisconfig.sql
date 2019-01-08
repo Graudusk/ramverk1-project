@@ -1,31 +1,31 @@
-SET NAMES utf8;
+-- SET NAMES utf8;
 
-CREATE DATABASE IF NOT EXISTS `travel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `travel`;
+-- CREATE DATABASE IF NOT EXISTS `travel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE `travel`;
 
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
-GRANT ALL ON *.* TO 'user'@'localhost';
+-- CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
+-- GRANT ALL ON *.* TO 'user'@'localhost';
 
 
 --
 -- Create a database for test
 --
--- DROP DATABASE IF EXISTS travel;
--- CREATE DATABASE IF NOT EXISTS travel;
--- USE travel;
+DROP DATABASE IF EXISTS travel;
+CREATE DATABASE IF NOT EXISTS travel;
+USE travel;
 -- USE erjh17;
 
 -- -- Ensure UTF8 as chacrter encoding within connection.
--- SET NAMES utf8;
+SET NAMES utf8;
 
 -- --
 -- -- Create a database user for the test database
 -- --
--- GRANT ALL ON erjh17.* TO user@localhost IDENTIFIED BY 'user';
+GRANT ALL ON travel.* TO user@localhost IDENTIFIED BY 'pass';
 
 -- -- Ensure UTF8 on the database connection
 -- SET NAMES utf8;
-USE `travel`;
+-- USE `travel`;
 
 --
 -- Table User

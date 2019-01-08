@@ -53,7 +53,7 @@ class SiteControllerTest extends TestCase
      */
     public function testIndexAction()
     {
-        $res = $this->controller->IndexActionGet();
+        $res = $this->controller->IndexAction();
         $this->assertInstanceOf("\Anax\Response\Response", $res);
 
         $body = $res->getBody();
@@ -75,6 +75,4 @@ class SiteControllerTest extends TestCase
         $exp = "Ask questions, get answers and send comments!";
         $this->assertContains($exp, $body);
     }
-
-
 }

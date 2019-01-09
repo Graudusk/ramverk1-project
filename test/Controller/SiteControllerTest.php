@@ -1,6 +1,6 @@
 <?php
 
-namespace Erjh17\Controller;
+namespace Anax\Controller;
 
 use Anax\DI\DIFactoryConfig;
 use PHPUnit\Framework\TestCase;

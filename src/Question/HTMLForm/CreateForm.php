@@ -28,16 +28,19 @@ class CreateForm extends FormModel
             [
                 "title" => [
                     "type" => "text",
+                    "placeholder" => "Question summary",
                     "validation" => ["not_empty"],
                 ],
 
                 "question" => [
                     "type" => "textarea",
+                    "placeholder" => "Write your question here",
                     "validation" => ["not_empty"],
                 ],
 
                 "tags" => [
                     "type" => "text",
+                    "placeholder" => "Travel, Asia, Hong Kong"
                 ],
 
                 "submit" => [
@@ -91,6 +94,7 @@ class CreateForm extends FormModel
         foreach (explode(",", $this->form->value("tags")) as $value) {
             if ($value) {
                 $tag = new Tag();
+                $value = trim($value);
                 $tag->setDb($this->di->get("dbqb"));
                 $tag->slug  = $question->slugify($value);
                 $tag->tag = $value;

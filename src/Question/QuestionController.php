@@ -119,6 +119,21 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $id);
 
+        if (!$question) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => $pages[$path][0],
+                    "text" => $pages[$path][1],
+                ]
+            );
+
+            return $page->render([
+                "title" => "Delete an item",
+            ]);
+        }
+
         $page->add("question/crud/delete", [
             "question" => $question,
             "form" => $form->getHTML(),
@@ -171,6 +186,22 @@ class QuestionController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->getQuestionObject("slug", $slug);
+
+        if (!$question->id) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => "Anax 404: Not Found",
+                    "text" => "The page you are looking for is not here.",
+                ]
+            );
+
+            return $page->render([
+                "title" => "Anax 404: Not Found",
+            ]);
+        }
+
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         $tag = new Tag();
@@ -240,6 +271,22 @@ class QuestionController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->getQuestionObject("Question.id", $questionId);
+
+        if (!$question->id) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => "Anax 404: Not Found",
+                    "text" => "The page you are looking for is not here.",
+                ]
+            );
+
+            return $page->render([
+                "title" => "Anax 404: Not Found",
+            ]);
+        }
+
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         $page->add("question/crud/answer", [
@@ -273,6 +320,22 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         // $question->find("id", $questionId);
         $question->getQuestionObject("Question.id", $questionId);
+
+        if (!$question->id) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => "Anax 404: Not Found",
+                    "text" => "The page you are looking for is not here.",
+                ]
+            );
+
+            return $page->render([
+                "title" => "Anax 404: Not Found",
+            ]);
+        }
+
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         $answer = new Answer();

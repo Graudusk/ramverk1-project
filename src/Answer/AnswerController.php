@@ -172,6 +172,22 @@ class AnswerController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->getQuestionObject("Question.id", $questionId);
+
+        if (!$question->id) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => "Anax 404: Not Found",
+                    "text" => "The page you are looking for is not here.",
+                ]
+            );
+
+            return $page->render([
+                "title" => "Anax 404: Not Found",
+            ]);
+        }
+
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
         // var_dump($question);
 

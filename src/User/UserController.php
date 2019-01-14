@@ -140,9 +140,12 @@ class UserController implements ContainerInjectableInterface
         $userSecurity->auth();
 
         $userId = $this->di->session->get('login')['id'];
+
+        if (!$userId) {
+            return $this->di->get('response')->redirect("user/login");
+        }
         return $this->di->get('response')->redirect("user/view/$userId");
     }
-
 
 
     /**
@@ -197,6 +200,24 @@ class UserController implements ContainerInjectableInterface
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
         $user->find("id", $id);
+
+
+
+        if (!$user->id) {
+            $page = $this->di->get("page");
+            $page->add(
+                "anax/v2/error/default",
+                [
+                    "header" => "Anax 404: Not Found",
+                    "text" => "The page you are looking for is not here.",
+                ]
+            );
+
+            return $page->render([
+                "title" => "Anax 404: Not Found",
+            ]);
+        }
+
         $userId = $this->di->session->get('login')['id'];
         $isUser = $user->id === $userId;
 

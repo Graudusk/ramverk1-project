@@ -142,7 +142,6 @@ class Navbar
         ) use (
             &$createMenu
         ) {
-
             $html = null;
             $hasItemIsSelected = false;
 

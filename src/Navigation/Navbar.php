@@ -66,11 +66,11 @@ class Navbar
      */
     public function getLoginButton()
     {
-        if ($this->di->session->get("login")) {
+        if ($this->di->session->get("login") && $this->di->session instanceof \Anax\Session\Session) {
             $user = new \Erjh17\User\User();
             $logoutUrl = $this->url('user/logout');
             $profileUrl = $this->url('user/profile');
-            $session = $this->di->session instanceof \Anax\Session\Session ? $this->di->session->get('login') : null;
+            $session = $this->di->session->get('login');
 
             return "<li><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($session['email'], true, 20)}  {$session['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
         } else {

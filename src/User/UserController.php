@@ -49,7 +49,7 @@ class UserController implements ContainerInjectableInterface
 
     /**
      * [indexActionGet description]
-     * @return [type] [description]
+     * @return object [description]
      */
     public function indexActionGet() : object
     {

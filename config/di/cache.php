@@ -1,4 +1,5 @@
 <?php
+/** global: $this */
 /**
  * Configuration file for DI container.
  */

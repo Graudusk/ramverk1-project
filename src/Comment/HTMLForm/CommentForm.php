@@ -105,7 +105,6 @@ class CommentForm extends FormModel
         $comment->post  = $this->form->value("post");
         $comment->type  = $this->form->value("type");
         $comment->created  = date("Y-m-d H:i:s");
-        // var_dump($comment);
         $comment->save();
         return true;
     }
@@ -119,7 +118,20 @@ class CommentForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question")->send();
+        $slug = "";
+        if ($this->form->value("type") == "question") {
+            $question = $this->getQuestionDetails($this->form->value("post"));
+            $slug = $question->slug;
+        } else {
+            $answer = $this->getAnswerDetails($this->form->value("post"));
+            $question = $this->getQuestionDetails($answer->question);
+            $slug = $question->slug;
+        }
+        if ($slug != "") {
+            $this->di->get("response")->redirect("question/show/$slug")->send();
+        } else {
+            $this->di->get("response")->redirect("question")->send();
+        }
     }
 
 

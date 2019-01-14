@@ -33,17 +33,18 @@ class AnswerController implements ContainerInjectableInterface
 
 
 
-    // /**
-    //  * The initialize method is optional and will always be called before the
-    //  * target method/action. This is a convienient method where you could
-    //  * setup internal properties that are commonly used by several methods.
-    //  *
-    //  * @return void
-    //  */
-    // public function initialize() : void
-    // {
-    //     ;
-    // }
+    /**
+     * The initialize method is optional and will always be called before the
+     * target method/action. This is a convienient method where you could
+     * setup internal properties that are commonly used by several methods.
+     *
+     * @return void
+     */
+    public function initialize() : void
+    {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+    }
 
 
 
@@ -164,9 +165,6 @@ class AnswerController implements ContainerInjectableInterface
      */
     public function writeAction(int $questionId) : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
-
         $page = $this->di->get("page");
         $form = new AnswerForm($this->di, $questionId);
         $form->check();

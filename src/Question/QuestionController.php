@@ -35,17 +35,18 @@ class QuestionController implements ContainerInjectableInterface
 
 
 
-    // /**
-    //  * The initialize method is optional and will always be called before the
-    //  * target method/action. This is a convienient method where you could
-    //  * setup internal properties that are commonly used by several methods.
-    //  *
-    //  * @return void
-    //  */
-    // public function initialize() : void
-    // {
-    //     ;
-    // }
+    /**
+     * The initialize method is optional and will always be called before the
+     * target method/action. This is a convienient method where you could
+     * setup internal properties that are commonly used by several methods.
+     *
+     * @return void
+     */
+    public function initialize() : void
+    {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+    }
 
 
 
@@ -86,8 +87,8 @@ class QuestionController implements ContainerInjectableInterface
      */
     public function createAction() : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
+        // $userSecurity = new UserSecurity($this->di);
+        // $userSecurity->auth();
         $page = $this->di->get("page");
         $form = new CreateForm($this->di);
         $form->check();
@@ -139,9 +140,6 @@ class QuestionController implements ContainerInjectableInterface
      */
     public function updateAction(int $id) : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
-
         $page = $this->di->get("page");
         $form = new UpdateForm($this->di, $id);
         $form->check();
@@ -172,15 +170,13 @@ class QuestionController implements ContainerInjectableInterface
         $page = $this->di->get("page");
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        // $question->find("slug", $slug);
         $question->getQuestionObject("slug", $slug);
         $questionHtml = MarkdownExtra::defaultTransform($question->question);
 
         $tag = new Tag();
         $tag->setDb($this->di->get("dbqb"));
         $tags = $tag->findAllWhere("question = ?", $question->id);
-        // var_dump($tags);
-        
+
         $userId = $this->di->session->get('login')['id'];
         $isUser = $question->user === $userId;
 
@@ -237,9 +233,6 @@ class QuestionController implements ContainerInjectableInterface
      */
     public function answerAction(int $questionId) : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
-
         $page = $this->di->get("page");
         $form = new AnswerForm($this->di, $questionId);
         $form->check();
@@ -268,9 +261,6 @@ class QuestionController implements ContainerInjectableInterface
      */
     public function commentAction(int $questionId) : object
     {
-        $userSecurity = new UserSecurity($this->di);
-        $userSecurity->auth();
-
         $page = $this->di->get("page");
         $form = new CommentForm($this->di, $questionId, "question");
         $form->check();

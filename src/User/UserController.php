@@ -53,6 +53,9 @@ class UserController implements ContainerInjectableInterface
      */
     public function indexActionGet() : object
     {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+
         $page = $this->di->get("page");
 
         $user = new User();
@@ -133,7 +136,6 @@ class UserController implements ContainerInjectableInterface
      */
     public function profileAction() : object
     {
-
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
@@ -152,6 +154,9 @@ class UserController implements ContainerInjectableInterface
      */
     public function editAction() : object
     {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+
         $page = $this->di->get("page");
         $id = $this->di->session->get('login')['id'];
 
@@ -195,7 +200,6 @@ class UserController implements ContainerInjectableInterface
         $userId = $this->di->session->get('login')['id'];
         $isUser = $user->id === $userId;
 
-
         //hämta frågor
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
@@ -207,6 +211,16 @@ class UserController implements ContainerInjectableInterface
             $tag->setDb($this->di->get("dbqb"));
             $tags = $tag->findAllWhere("question = ?", $item->id);
             $item->tags = $tags;
+        }
+
+
+        //hämta svar
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answers = $answer->getUserAnswers($id);
+
+        foreach ($answers as $answer) {
+            $answer->html = MarkdownExtra::defaultTransform($answer->answer);
         }
 
         //hämta kommentarer
@@ -227,6 +241,7 @@ class UserController implements ContainerInjectableInterface
             "isUser" => $isUser,
             "avatar" => $user->getGravatar($user->email, true, 200),
             "questions" => $questions,
+            "answers" => $answers,
             "questionComments" => $questionComments,
             "answerComments" => $answerComments
         ]);

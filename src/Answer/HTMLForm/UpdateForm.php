@@ -5,6 +5,7 @@ namespace Erjh17\Answer\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Answer\Answer;
+use Erjh17\Question\Question;
 
 /**
  * Form to update an item.
@@ -73,6 +74,22 @@ class UpdateForm extends FormModel
     }
 
 
+    /**
+     * Get details on item to load form with.
+     *
+     * @param integer $id get details on item with id.
+     *
+     * @return Question
+     */
+    public function getQuestionDetails($id) : object
+    {
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $id);
+        return $question;
+    }
+
+
 
     /**
      * Callback for submit-button which should return true if it could
@@ -92,16 +109,18 @@ class UpdateForm extends FormModel
 
 
 
-    // /**
-    //  * Callback what to do if the form was successfully submitted, this
-    //  * happen when the submit callback method returns true. This method
-    //  * can/should be implemented by the subclass for a different behaviour.
-    //  */
-    // public function callbackSuccess()
-    // {
-    //     $this->di->get("response")->redirect("answer")->send();
-    //     //$this->di->get("response")->redirect("answer/update/{$answer->id}");
-    // }
+    /**
+     * Callback what to do if the form was successfully submitted, this
+     * happen when the submit callback method returns true. This method
+     * can/should be implemented by the subclass for a different behaviour.
+     */
+    public function callbackSuccess()
+    {
+        $question = $this->getQuestionDetails($this->form->value("question"));
+        $this->di->get("response")->redirect("question/show/{$question->slug}")->send();
+        // $this->di->get("response")->redirect("answer")->send();
+        //$this->di->get("response")->redirect("answer/update/{$answer->id}");
+    }
 
 
 

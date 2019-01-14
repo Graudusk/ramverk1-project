@@ -79,7 +79,7 @@ class Question extends ActiveRecordModel
                         ->select("Question.*, User.name")
                         ->from($this->tableName)
                         ->join("User", "User.id = Question.user")
-                        ->orderBy("updated, created DESC")
+                        ->orderBy("updated DESC, created DESC")
                         ->limit($limit)
                         ->execute()
                         ->fetchAllClass(get_class($this));

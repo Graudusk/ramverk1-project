@@ -5,6 +5,7 @@ namespace Erjh17\Answer\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Erjh17\Answer\Answer;
+use Erjh17\Question\Question;
 
 /**
  * Form to delete an item.
@@ -91,6 +92,21 @@ class DeleteForm extends FormModel
     }
 
 
+    /**
+     * Get details on item to load form with.
+     *
+     * @param integer $id get details on item with id.
+     *
+     * @return Question
+     */
+    public function getQuestionDetails($id) : object
+    {
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $question->find("id", $id);
+        return $question;
+    }
+
 
     /**
      * Callback what to do if the form was successfully submitted, this
@@ -99,7 +115,9 @@ class DeleteForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question")->send();
+        $question = $this->getQuestionDetails($this->form->value("question"));
+        $this->di->get("response")->redirect("question/show/{$question->slug}")->send();
+        // $this->di->get("response")->redirect("question")->send();
     }
 
 

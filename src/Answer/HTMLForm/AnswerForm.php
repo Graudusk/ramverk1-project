@@ -93,7 +93,8 @@ class AnswerForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question")->send();
+        $question = $this->getItemDetails($this->form->value("question"));
+        $this->di->get("response")->redirect("question/show/$question->slug")->send();
     }
 
 

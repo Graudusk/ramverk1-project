@@ -4,6 +4,7 @@ namespace Erjh17\Tag;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
+use Erjh17\User\UserSecurity;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -25,17 +26,18 @@ class TagController implements ContainerInjectableInterface
 
 
 
-    // /**
-    //  * The initialize method is optional and will always be called before the
-    //  * target method/action. This is a convienient method where you could
-    //  * setup internal properties that are commonly used by several methods.
-    //  *
-    //  * @return void
-    //  */
-    // public function initialize() : void
-    // {
-    //     ;
-    // }
+    /**
+     * The initialize method is optional and will always be called before the
+     * target method/action. This is a convienient method where you could
+     * setup internal properties that are commonly used by several methods.
+     *
+     * @return void
+     */
+    public function initialize() : void
+    {
+        $userSecurity = new UserSecurity($this->di);
+        $userSecurity->auth();
+    }
 
 
 

@@ -40,7 +40,7 @@ class CreateForm extends FormModel
 
                 "tags" => [
                     "type" => "text",
-                    "placeholder" => "Travel, Asia, Hong Kong"
+                    "placeholder" => "Ex: Travel, Asia, Hong Kong"
                 ],
 
                 "submit" => [

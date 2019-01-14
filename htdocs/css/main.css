@@ -7639,6 +7639,14 @@ select {
 .htmlform {
   border: none;
 }
+.htmlform input[type="text"],
+.htmlform input[type="email"],
+.htmlform input[type="password"],
+.htmlform input[type="number"],
+.htmlform select,
+.htmlform textarea {
+  width: 100%;
+}
 .comment {
   background: #f6f6f6;
   border-left: #ddd solid 15px;

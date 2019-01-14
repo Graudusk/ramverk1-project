@@ -70,7 +70,9 @@ class Navbar
             $user = new \Erjh17\User\User();
             $logoutUrl = $this->url('user/logout');
             $profileUrl = $this->url('user/profile');
-            return "<li><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($this->di->session->get('login')['email'], true, 20)}  {$this->di->session->get('login')['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
+            $session = $this->di->session instanceof \Anax\Session\Session ? $this->di->session->get('login') : null;
+
+            return "<li><a class='profileLink' href='{$profileUrl}'>{$user->getGravatar($session['email'], true, 20)}  {$session['name']}</a></li><li><a href='{$logoutUrl}'>Log out</a></li>";
         } else {
             $loginUrl = $this->url('user/login');
             return "\n<li><a href='{$loginUrl}'>Login</a></li>\n";

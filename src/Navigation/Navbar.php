@@ -80,6 +80,36 @@ class Navbar
         }
     }
 
+    public function buildSubmenus($items)
+    {
+        $tempHtml = "";
+        foreach ($items as $item) {
+            // Check if the current menuitem is selected
+            if (!isset($item["url"])) {
+                // var_dump($item);
+            }
+            $selected = $this->check($item["url"])
+                ? "selected "
+                : null;
+
+            // Is there a class set for this item, then use it
+            $class = isset($item["class"]) && ! is_null($item["class"])
+                ? $item["class"]
+                : null;
+
+            // Prepare the class-attribute, if used
+            $class = ($selected || $class)
+                ? " class=\"{$selected}{$class}\" "
+                : null;
+
+            // Add the menu item
+            // $url = $menu["create_url"]($item["url"]);
+            $url = $this->url($item["url"]);
+            $tempHtml .= "\n<li{$class}><a href='{$url}' title='{$item['title']}'>{$item['text']}</a></li>\n";
+        }
+        return $tempHtml;
+    }
+
 
 
     /**
@@ -116,35 +146,7 @@ class Navbar
             $html = null;
             $hasItemIsSelected = false;
 
-            foreach ($items as $item) {
-                // Check if the current menuitem is selected
-                if (!isset($item["url"])) {
-                    // var_dump($item);
-                }
-                $selected = $this->check($item["url"])
-                    ? "selected "
-                    : null;
-
-                // Is there a class set for this item, then use it
-                $class = isset($item["class"]) && ! is_null($item["class"])
-                    ? $item["class"]
-                    : null;
-
-                // Prepare the class-attribute, if used
-                $class = ($selected || $class)
-                    ? " class=\"{$selected}{$class}\" "
-                    : null;
-
-                // Add the menu item
-                // $url = $menu["create_url"]($item["url"]);
-                $url = $this->url($item["url"]);
-                $html .= "\n<li{$class}><a href='{$url}' title='{$item['title']}'>{$item['text']}</a></li>\n";
-
-                // To remember there is selected children when going up the menu hierarchy
-                if ($selected) {
-                    $hasItemIsSelected = true;
-                }
-            }
+            $html .= $this->buildSubmenus($items);
             $html .= $this->getLoginButton();
 
             // Return the menu

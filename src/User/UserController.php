@@ -203,7 +203,7 @@ class UserController implements ContainerInjectableInterface
             ]);
         }
 
-        $userId = $this->di->session->get('login')['id'];
+        $userId = $this->di->get("session")->get('login')['id'];
         $isUser = $user->id === $userId;
 
         //hämta frågor

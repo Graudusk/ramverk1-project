@@ -57,11 +57,11 @@ class UserSecurity
      *
      * @param number $level the user level to check for.
      *
-     * @return true | redirect to start page
+     * @return true
      */
     public function userAuth($user)
     {
-        if ($this->di->session->get("login")["id"] == $user) {
+        if ($this->di->get("session")->get("login")["id"] == $user) {
             return true;
         } else {
             return $this->di->get("response")->redirect("");

@@ -45,7 +45,7 @@ class UserSecurity
      */
     public function auth()
     {
-        if ($this->di->session->get("login")) {
+        if ($this->di->get("session")->get("login")) {
             return true;
         } else {
             return $this->di->get("response")->redirect("user/login");

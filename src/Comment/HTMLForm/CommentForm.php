@@ -144,7 +144,8 @@ class CommentForm extends FormModel
      */
     public function getUserId()
     {
-        return $this->di->session->get('login')['id'];
+        $session = $this->di->get("session");
+        return $session->get('login')['id'];
     }
 
 

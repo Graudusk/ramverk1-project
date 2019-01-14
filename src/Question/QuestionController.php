@@ -201,8 +201,9 @@ class QuestionController implements ContainerInjectableInterface
         $tag = new Tag();
         $tag->setDb($this->di->get("dbqb"));
         $tags = $tag->findAllWhere("question = ?", $question->id);
+        $session = $this->di->get("session");
 
-        $userId = $this->di->session->get('login')['id'];
+        $userId = $session->get('login')['id'];
         $isUser = $question->user === $userId;
 
         $answer = new Answer();

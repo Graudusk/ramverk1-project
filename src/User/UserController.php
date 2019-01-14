@@ -75,16 +75,9 @@ class UserController implements ContainerInjectableInterface
         ]);
     }
 
-
-
     /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
-     *
-     * @return object as a response object
+     * [loginAction description]
+     * @return object rendered page
      */
     public function loginAction() : object
     {
@@ -124,22 +117,17 @@ class UserController implements ContainerInjectableInterface
     }
 
 
-
     /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
-     *
-     * @return object as a response object
+     * [profileAction description]
+     * @return object [description]
      */
     public function profileAction() : object
     {
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
-        $userId = $this->di->session->get('login')['id'];
+        $session = $this->di->get("session");
+        $userId = $session->get('login')['id'];
 
         if (!$userId) {
             return $this->di->get('response')->redirect("user/login");
@@ -160,8 +148,9 @@ class UserController implements ContainerInjectableInterface
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
+        $session = $this->di->get("session");
         $page = $this->di->get("page");
-        $id = $this->di->session->get('login')['id'];
+        $id = $session->get('login')['id'];
 
         $form = new EditUserForm($this->di, $id);
         $form->check();
@@ -182,13 +171,9 @@ class UserController implements ContainerInjectableInterface
     }
 
     /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
-     *
-     * @return object as a response object
+     * [viewAction description]
+     * @param  integer $id [description]
+     * @return object     [description]
      */
     public function viewAction($id) : object
     {

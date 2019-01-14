@@ -55,7 +55,7 @@ class SiteController implements ContainerInjectableInterface
 
      * @return object as the response.
      */
-    public function catchAll(...$args) : object
+    public function catchAll(/** @scrutinizer ignore-unused */...$args) : object
     {
         $title = " | Anax";
         $pages = [

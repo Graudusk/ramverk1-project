@@ -66,7 +66,7 @@ class Navbar
      */
     public function getLoginButton()
     {
-        if ($this->di->session->get("login") && $this->di->session instanceof \Anax\Session\Session) {
+        if ($this->di->session instanceof \Anax\Session\Session && $this->di->session->get("login")) {
             $user = new \Erjh17\User\User();
             $logoutUrl = $this->url('user/logout');
             $profileUrl = $this->url('user/profile');

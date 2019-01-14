@@ -135,7 +135,7 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $id);
 
-        if (!$question) {
+        if (!$question->id) {
             return $this->view404();
         }
 

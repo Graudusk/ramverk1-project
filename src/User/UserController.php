@@ -185,6 +185,17 @@ class UserController implements ContainerInjectableInterface
         ]);
     }
 
+    public function getQuestionsTags($questions)
+    {
+        foreach ((array)$questions as $item) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tags = $tag->findAllWhere("question = ?", $item->id);
+            $item->tags = $tags;
+        }
+        return $questions;
+    }
+
     /**
      * [viewAction description]
      * @param  integer $id [description]
@@ -208,19 +219,11 @@ class UserController implements ContainerInjectableInterface
         $userId = $this->di->get("session")->get('login')['id'];
         $isUser = $user->id === $userId;
 
-        //hämta frågor
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $questions = $question->getUserQuestions($id);
+        $questions = $this->getQuestionsTags($questions);
 
-        foreach ((array)$questions as $item) {
-            $tag = new Tag();
-            $tag->setDb($this->di->get("dbqb"));
-            $tags = $tag->findAllWhere("question = ?", $item->id);
-            $item->tags = $tags;
-        }
-
-        //hämta svar
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answers = $answer->getUserAnswers($id);
@@ -229,7 +232,6 @@ class UserController implements ContainerInjectableInterface
             $answer->html = MarkdownExtra::defaultTransform($answer->answer);
         }
 
-        //hämta kommentarer
         $comment = new Comment();
         $comment->setDb($this->di->get("dbqb"));
         $questionComments = $comment->getUserQuestionComments($id);

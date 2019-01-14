@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS `travel` DEFAULT CHARACTER SET utf8 COLLATE utf8_g
 
 USE `travel`;
 
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'user';
 
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
 

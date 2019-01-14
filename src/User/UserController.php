@@ -148,9 +148,8 @@ class UserController implements ContainerInjectableInterface
         $userSecurity = new UserSecurity($this->di);
         $userSecurity->auth();
 
-        $session = $this->di->get("session");
         $page = $this->di->get("page");
-        $id = $session->get('login')['id'];
+        $id = $this->di->get("session")->get('login')['id'];
 
         $form = new EditUserForm($this->di, $id);
         $form->check();
@@ -170,6 +169,22 @@ class UserController implements ContainerInjectableInterface
         return $this->di->get('response')->redirect("");
     }
 
+    public function get404page()
+    {
+        $page = $this->di->get("page");
+        $page->add(
+            "anax/v2/error/default",
+            [
+                "header" => "Anax 404: Not Found",
+                "text" => "The page you are looking for is not here.",
+            ]
+        );
+
+        return $page->render([
+            "title" => "Anax 404: Not Found",
+        ]);
+    }
+
     /**
      * [viewAction description]
      * @param  integer $id [description]
@@ -186,21 +201,8 @@ class UserController implements ContainerInjectableInterface
         $user->setDb($this->di->get("dbqb"));
         $user->find("id", $id);
 
-
-
         if (!$user->id) {
-            $page = $this->di->get("page");
-            $page->add(
-                "anax/v2/error/default",
-                [
-                    "header" => "Anax 404: Not Found",
-                    "text" => "The page you are looking for is not here.",
-                ]
-            );
-
-            return $page->render([
-                "title" => "Anax 404: Not Found",
-            ]);
+            return $this->get404page();
         }
 
         $userId = $this->di->get("session")->get('login')['id'];
@@ -209,7 +211,6 @@ class UserController implements ContainerInjectableInterface
         //hämta frågor
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-
         $questions = $question->getUserQuestions($id);
 
         foreach ((array)$questions as $item) {
@@ -218,7 +219,6 @@ class UserController implements ContainerInjectableInterface
             $tags = $tag->findAllWhere("question = ?", $item->id);
             $item->tags = $tags;
         }
-
 
         //hämta svar
         $answer = new Answer();

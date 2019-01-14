@@ -135,7 +135,7 @@ class Question extends ActiveRecordModel
         $params = [$tag];
         return $this->db->connect()
                         ->select("Tag.*, Question.*, User.name")
-                        ->from("tag")
+                        ->from("Tag")
                         ->where("Tag.slug = ?")
                         ->join("question", "Question.id = Tag.question")
                         ->join("user", "Question.user = User.id")

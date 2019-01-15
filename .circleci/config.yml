@@ -26,7 +26,7 @@ jobs:
 
             # - run: composer install -n --prefer-dist
             # - run: sudo apt-get update && sudo apt-get install -y mysql-client
-            # - run: mysql  -h 127.0.0.1 -u root -e "create database travel;"
+            - run: mysql -u root --password="" < test/travis.sql
             - run: make install
             # - run: ./install.bash
 

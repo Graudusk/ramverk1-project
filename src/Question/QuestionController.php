@@ -238,20 +238,6 @@ class QuestionController implements ContainerInjectableInterface
         }
 
         $answers = $this->getAllAnswerComments($answers, $userId);
-/*
-        foreach ((array)$answers as $key => $value) {
-            $value->html = MarkdownExtra::defaultTransform($value->answer);
-            $answerComment = new Comment();
-            $answerComment->setDb($this->di->get("dbqb"));
-
-
-            $answers[$key]->isUser = $answers[$key]->user === $userId;
-
-            $answers[$key]->comments = $answerComment->findAllComments([$value->id, "answer"]);
-            foreach ($answers[$key]->comments as $comment) {
-                $comment->html = MarkdownExtra::defaultTransform($comment->text);
-            }
-        }*/
 
         $page->add("question/crud/show", [
             "isUser" => $isUser,
@@ -268,9 +254,6 @@ class QuestionController implements ContainerInjectableInterface
             "title" => $title,
         ]);
     }
-
-
-
 
     /**
      * Show item.

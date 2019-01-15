@@ -25,7 +25,7 @@ jobs:
                     - v1-dependencies-
 
             # - run: composer install -n --prefer-dist
-            # - run: sudo apt-get update && sudo apt-get install -y mysql-client
+            - run: sudo apt-get update && sudo apt-get install -y mysql-client
             - run: mysql -u root --password="" < test/travis.sql
             - run: make install
             # - run: ./install.bash
